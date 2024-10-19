@@ -11,17 +11,16 @@ Se placer dans le fichier build
 
 ## API officielle de Java :
 
-- Documentation : [API Officielle Java]((Java SE 21 &amp; JDK 21)](https://iut-fbleau.fr/docs/java/api/index.html))
-- Auteur : Oracle
+- Documentation : [API Officielle Java](https://iut-fbleau.fr/docs/java/api/index.html).
+- Auteur : [Oracle](https://www.oracle.com/fr/java/).
 
 ### Crédits :
 
-- Code :
   
-  - Amir Kabbouri  (@kabbouri)
+  - [Amir Kabbouri](@kabbouri)
 
-  - Tarehi Zaabay (@zaabay)
+  - [Tarehi Zaabay](@zaabay)
 
-  - Athiran Nagathurai (@nagathur)
+  - [Athiran Nagathurai](@nagathur)
 
   
