@@ -137,13 +137,14 @@ public class TileView extends JPanel implements MouseListener{
     
     
     public static void main(String[] args) {
-        Tile tile = new Tile(Tile.TerrainType.MER);
+        Tile tile = new Tile(Tile.TerrainType.FORET);
         TileView tileView = new TileView(tile);
         
-        JFrame frame = new JFrame("Tile View Example");
+        JFrame frame = new JFrame("Deformantique");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(tileView);
-        frame.pack();
+        frame.setSize(800,800);
+        // frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         
