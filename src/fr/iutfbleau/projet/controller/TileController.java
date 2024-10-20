@@ -23,29 +23,8 @@ public class TileController {
             return;
         }
 
-        Point point;
-        
-        if (x > autreTuiles.x) {
-            if (y > autreTuiles.y) {
-                point = new Point(autreTuiles.x + 150, autreTuiles.y+85);
-            } else {
-                point = new Point(autreTuiles.x +150 , autreTuiles.y - 85);
-            }
-        } else if(x < autreTuiles.x){
-            if (y > autreTuiles.y) {
-                point = new Point(autreTuiles.x - 150, autreTuiles.y + 85);
-            } else {
-                point = new Point(autreTuiles.x - 150, autreTuiles.y - 85);
-            }
-        }else if(x < autreTuiles.x - 50   && x < autreTuiles.x + 50){
-            if (y > autreTuiles.y) {
-                point = new Point(autreTuiles.x, autreTuiles.y + 85);
-            } else {
-                point = new Point(autreTuiles.x, autreTuiles.y - 85);
-            }
-        }else{
-            point = new Point(autreTuiles.x, autreTuiles.y);
-        }
+        Point point = verifPoint(autreTuiles, x, y);
+    
 
         tileView.ajouterPosition(point);
         tileView.repaint();
@@ -56,4 +35,35 @@ public class TileController {
     public Point getLastTileCenter() {
         return tileView.getLastTilePosition();
     }
+
+
+    public Point verifPoint(Point autreTuiles, int x, int y){
+        Point point;
+        if (x > autreTuiles.x - 25 && x < autreTuiles.x + 25) {
+            if (y > autreTuiles.y) {
+                point = new Point(autreTuiles.x, autreTuiles.y + 170);
+            } else {
+                point = new Point(autreTuiles.x, autreTuiles.y - 170);
+            }
+        }
+        else if (x > autreTuiles.x) {
+            if (y > autreTuiles.y) {
+                point = new Point(autreTuiles.x + 150, autreTuiles.y + 85);
+            } else {
+                point = new Point(autreTuiles.x + 150 , autreTuiles.y - 85);
+            }
+        } else if(x < autreTuiles.x){
+            if (y > autreTuiles.y) {
+                point = new Point(autreTuiles.x - 150, autreTuiles.y + 85);
+            } else {
+                point = new Point(autreTuiles.x - 150, autreTuiles.y - 85);
+            }
+        }else{
+            point = new Point(autreTuiles.x, autreTuiles.y);
+        }
+
+        return point;
+    }
+
+
 }
