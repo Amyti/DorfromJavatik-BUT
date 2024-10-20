@@ -13,7 +13,7 @@ public class Main {
         JFrame frame = new JFrame("Deformantique");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(tileView);
-        frame.setSize(800, 800);
+        frame.setSize(1080, 720);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

@@ -1,7 +1,7 @@
 package vue;
 
 import model.Tile;
-import vue.*;
+import controller.TileController;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -12,15 +12,29 @@ import java.util.List;
 public class TileView extends JPanel implements MouseListener {
 
     private Tile tile;
-    private List<Point> position;
+    private List<Point> positions;  
     private final BasicStroke fixedStroke;
+    private TileController tileController;
 
     public TileView(Tile tile) {
         this.tile = tile;
-        this.position = new ArrayList<>();
+        this.positions = new ArrayList<>();
         this.fixedStroke = new BasicStroke(3);
         setPreferredSize(new Dimension(400, 400));
         this.addMouseListener(this);
+        this.positions.add(new Point(490,310)); 
+        this.tileController = new TileController(this);
+    }
+
+    public void ajouterPosition(Point point) {
+        positions.add(point);
+    }
+
+    public Point getLastTilePosition() {
+        if (!positions.isEmpty()) {
+            return positions.get(positions.size() - 1);
+        }
+        return null;
     }
 
     @Override
@@ -30,7 +44,7 @@ public class TileView extends JPanel implements MouseListener {
 
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        for (Point position : this.position) {
+        for (Point position : this.positions) {
             int centerX = position.x;
             int centerY = position.y;
             int largeRadius = 100;
@@ -47,10 +61,12 @@ public class TileView extends JPanel implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        position.add(e.getPoint());
-        repaint();
+        int x = e.getX();
+        int y = e.getY();
+        tileController.PlacerTuile(x, y); 
     }
 
+    // Méthodes inutilisées du MouseListener
     @Override
     public void mousePressed(MouseEvent e) {}
     @Override
