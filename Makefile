@@ -1,34 +1,24 @@
-### VARIABLES ###
-JC = javac
-JCFLAGS = -d $(build) -classpath $(build) -encoding UTF-8 -implicit:none
+# Variables
+SRC_DIR = ../src/fr/iutfbleau/projet
+BUILD_DIR = build
+CLASSPATH = $(BUILD_DIR)
 
-JVM = java
-JVMFLAGS = -classpath $(build)
+# Fichiers sources
+CONTROLLER_SRC = $(SRC_DIR)/controller/TileController.java
+MAIN_SRC = $(SRC_DIR)/Main.java
+MODEL_SRC = $(SRC_DIR)/model/Tile.java
+VUE_SRC = $(SRC_DIR)/vue/Tuiles/*.java
 
-src = src ## c pour le repertoire src
-build = build ## c pour le repertoire build 
-main = fr/iutfbleau/projet ## c pour le repertoire projet
+# Cible par défaut
+all: compile
 
-### ESSENTIAL RULES ###
+# Compilation des fichiers
+compile: $(BUILD_DIR)/Main.class
 
-$(build)/$(main)/Main.class: $(src)/$(main)/Main.java $(build)/$(main)/vue/TileView.class $(build)/$(main)/model/Tile.class
-	$(JC) $(JCFLAGS) $(src)/$(main)/Main.java
+$(BUILD_DIR)/Main.class: $(CONTROLLER_SRC) $(MAIN_SRC) $(MODEL_SRC) $(VUE_SRC)
+	javac -d $(BUILD_DIR) -classpath $(CLASSPATH) $(CONTROLLER_SRC)
+	javac -d $(BUILD_DIR) -classpath $(CLASSPATH) $(MAIN_SRC)
 
-$(build)/$(main)/vue/TileView.class: $(src)/$(main)/vue/TileView.java
-	$(JC) $(JCFLAGS) $(src)/$(main)/vue/TileView.java
-
-
-$(build)/$(main)/model/Tile.class: $(src)/$(main)/model/Tile.java
-	$(JC) $(JCFLAGS) $(src)/$(main)/model/Tile.java
-
-### OPTIONAL RULES ###
-
-run: $(build)/$(main)/Main.class
-	$(JVM) $(JVMFLAGS) fr.iutfbleau.projet.Main
-
-## clean:
-## -rm -rf $(build)/* pas pour l'instant
-
-### PHONY TARGETS ###
-.PHONY: run ##clean
-
+# Lancer l'application
+run:
+	java -classpath $(CLASSPATH) fr.iutfbleau.projet.Main
