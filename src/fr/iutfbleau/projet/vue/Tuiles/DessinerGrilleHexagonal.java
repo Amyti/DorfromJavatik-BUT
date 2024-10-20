@@ -34,8 +34,6 @@ public class DessinerGrilleHexagonal {
                 if (intersection != null) {
                     g2d.setColor(getFixedTerrainColor(tile.getTerrain1(), centerX + offsetX, centerY + offsetY));
                     g2d.fill(intersection);
-                    g2d.setColor(Color.BLACK);
-                    g2d.setStroke(new BasicStroke(1));  
                     g2d.draw(intersection);
                 }
             }
@@ -67,7 +65,7 @@ public class DessinerGrilleHexagonal {
             case PRE:
                 return getFixedShade(index, new Color(0, 128, 0), new Color(144, 238, 144), new Color(34, 139, 34));
             case FORET:
-                return getFixedShade(index, new Color(0, 100, 0), new Color(34, 139, 34), new Color(85, 107, 47));
+                return getFixedShade(index, new Color(0, 100, 0), new Color(01, 139, 34), new Color(02, 180, 67));
             case MONTAGNE:
                 return getFixedShade(index, new Color(169, 169, 169), new Color(128, 128, 128), new Color(105, 105, 105));
             default:

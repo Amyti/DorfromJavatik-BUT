@@ -78,20 +78,26 @@ public class TileView extends JPanel implements MouseListener {
         }
     }
 
+    public void supprimerHexagone(Point position) {
+        positionsDisponibles.remove(position);
+        repaint();
+    }
+
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-        int x = e.getX();
-        int y = e.getY();
+public void mouseClicked(MouseEvent e) {
+    int x = e.getX();
+    int y = e.getY();
 
-        Point centreHexagone = tileController.getCentreHexagoneClique(x, y, positionsDisponibles);
+    Point centreHexagone = tileController.getCentreHexagoneClique(x, y, positionsDisponibles);
 
-        if (centreHexagone != null) {
-            tileController.PlacerTuile(centreHexagone.x, centreHexagone.y);
-            mettreAJourPositionsDisponibles(); 
-            repaint();
-        }
+    if (centreHexagone != null) {
+        tileController.PlacerTuile(centreHexagone.x, centreHexagone.y);
+        positionsDisponibles.remove(centreHexagone);
+        mettreAJourPositionsDisponibles(); 
+        repaint();
     }
+}
 
 
     @Override

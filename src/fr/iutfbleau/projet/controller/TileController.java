@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 public class TileController {
     private TileView tileView;
-    private int rayon = 50; 
 
     public TileController(TileView tileView) {
         this.tileView = tileView;
@@ -27,13 +26,15 @@ public class TileController {
         }
     
         Point point = new Point(x, y);
-    
+
         tileView.ajouterPosition(point);
         tileView.mettreAJourPositionsDisponibles(); 
         tileView.repaint();
     
         System.out.println("Centre de la tuile placée : (" + point.x + ", " + point.y + ")");
     }
+
+    
     
     public Point getCentreHexagoneClique(int x, int y, List<Point> positionsDisponibles) {
         int dispoRadius = 50;
