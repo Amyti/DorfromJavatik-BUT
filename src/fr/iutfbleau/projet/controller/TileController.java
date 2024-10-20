@@ -1,39 +1,48 @@
 package controller;
 
 import model.*;
+import model.Tile.TerrainType;
 import vue.*;
 
+
 import java.awt.*;
-import java.util.List;  
+import java.util.List;
+import java.util.Random;
 import java.util.ArrayList;   
 
 public class TileController {
     private TileView tileView;
     private int rayon = 50; 
+    private Random random = new Random();
 
     public TileController(TileView tileView) {
         this.tileView = tileView;
     }
 
-    public void PlacerTuile(int x, int y) {
-        Point autreTuiles = getLastTileCenter(); 
+    private TerrainType getRandomTerrainType() {
+        TerrainType[] types = TerrainType.values();
+        return types[random.nextInt(types.length)];
+    }
+
+ public void PlacerTuile(int x, int y) {
+    Point autreTuiles = getLastTileCenter();
+    Tile tuileAleatoire = new Tile(getRandomTerrainType()); 
     
-        if (autreTuiles == null) {
-            Point point = new Point(x, y);
-            tileView.ajouterPosition(point);
-            tileView.mettreAJourPositionsDisponibles(); 
-            tileView.repaint();
-            return;
-        }
-    
+    if (autreTuiles == null) {
         Point point = new Point(x, y);
-    
-        tileView.ajouterPosition(point);
+        tileView.ajouterTuile(point, tuileAleatoire); // Utilisez ajouterTuile au lieu de juste ajouter une position
         tileView.mettreAJourPositionsDisponibles(); 
         tileView.repaint();
-    
-        System.out.println("Centre de la tuile placée : (" + point.x + ", " + point.y + ")");
+        return;
     }
+
+    Point point = new Point(x, y);
+    tileView.ajouterTuile(point, tuileAleatoire); // Enregistrez la tuile ici
+    tileView.mettreAJourPositionsDisponibles(); 
+    tileView.repaint();
+
+    System.out.println("Centre de la tuile placée : (" + point.x + ", " + point.y + ")");
+}
     
     public Point getCentreHexagoneClique(int x, int y, List<Point> positionsDisponibles) {
         int dispoRadius = 50;
