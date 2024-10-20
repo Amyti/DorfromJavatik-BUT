@@ -9,12 +9,12 @@ public class HexagonUtils {
         Path2D hexagon = new Path2D.Double();
         for (int i = 0; i < 6; i++) {
             double angle = Math.toRadians(60 * i);
-            double x = centerX + radius * Math.cos(angle);
-            double y = centerY + radius * Math.sin(angle);
+            double x = centerX + Math.cos(angle) * radius;
+            double y = centerY + Math.sin(angle) * radius;
             if (i == 0) {
-                hexagon.moveTo(x, y);
+                hexagon.moveTo(Math.round(x), Math.round(y));
             } else {
-                hexagon.lineTo(x, y);
+                hexagon.lineTo(Math.round(x), Math.round(y));
             }
         }
         hexagon.closePath();

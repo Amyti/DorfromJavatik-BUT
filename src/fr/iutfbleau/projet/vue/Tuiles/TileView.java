@@ -15,6 +15,7 @@ public class TileView extends JPanel implements MouseListener {
     private List<Point> positions;  
     private final BasicStroke fixedStroke;
     private TileController tileController;
+    private List<Point> positionsDisponibles = new ArrayList<>(); 
 
     public TileView(Tile tile) {
         this.tile = tile;
@@ -24,6 +25,7 @@ public class TileView extends JPanel implements MouseListener {
         this.addMouseListener(this);
         this.positions.add(new Point(490,310)); 
         this.tileController = new TileController(this);
+        mettreAJourPositionsDisponibles();
     }
 
     public void ajouterPosition(Point point) {
@@ -37,6 +39,15 @@ public class TileView extends JPanel implements MouseListener {
         return null;
     }
 
+    
+
+    public void mettreAJourPositionsDisponibles() {
+        positionsDisponibles.clear();
+        for (Point position : positions) {
+            positionsDisponibles.addAll(tileController.calculerPositionsDisponibles(position, positionsDisponibles));
+        }
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -48,25 +59,41 @@ public class TileView extends JPanel implements MouseListener {
             int centerX = position.x;
             int centerY = position.y;
             int largeRadius = 100;
+            
             int smallRadius = 20;
             int rows = 6;
             int cols = 6;
 
             Shape largeHexagon = HexagonUtils.createHexagon(centerX, centerY, largeRadius);
-
             DessinerGrilleHexagonal grille = new DessinerGrilleHexagonal(g2d, centerX, centerY, rows, cols, smallRadius, largeHexagon, tile);
             grille.GrilleHexagonal();
         }
+
+        g2d.setColor(new Color(0, 0, 0, 50)); 
+        g2d.setStroke(new BasicStroke(2));
+        for (Point position : positionsDisponibles) {
+            int dispoRadius = 50;
+            Shape hexagon = HexagonUtils.createHexagon(position.x, position.y, dispoRadius);
+            g2d.draw(hexagon);
+        }
     }
+
 
     @Override
     public void mouseClicked(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
-        tileController.PlacerTuile(x, y); 
+
+        Point centreHexagone = tileController.getCentreHexagoneClique(x, y, positionsDisponibles);
+
+        if (centreHexagone != null) {
+            tileController.PlacerTuile(centreHexagone.x, centreHexagone.y);
+            mettreAJourPositionsDisponibles(); 
+            repaint();
+        }
     }
 
-    // Méthodes inutilisées du MouseListener
+
     @Override
     public void mousePressed(MouseEvent e) {}
     @Override

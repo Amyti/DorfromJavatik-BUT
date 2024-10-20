@@ -41,7 +41,7 @@ public class DessinerGrilleHexagonal {
             }
         }
 
-        g2d.setStroke(new BasicStroke(3));
+        g2d.setStroke(new BasicStroke(2));
         g2d.setColor(Color.BLACK);
         g2d.draw(largeHexagon);
     }
@@ -50,7 +50,11 @@ public class DessinerGrilleHexagonal {
         Area area1 = new Area(shape1);
         Area area2 = new Area(shape2);
         area1.intersect(area2);
-        return area1.isEmpty() ? null : area1;
+        if (area1.isEmpty() || area1.getBounds2D().getWidth() < 1 || area1.getBounds2D().getHeight() < 1) {
+            return null;
+        }
+    
+        return area1;
     }
 
     private Color getFixedTerrainColor(Tile.TerrainType terrain, int x, int y) {
