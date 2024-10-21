@@ -113,8 +113,6 @@ public class TileController {
                 positionFiltree.add(position);
             }
         }
-        
-        
 
         return positionFiltree;
     }

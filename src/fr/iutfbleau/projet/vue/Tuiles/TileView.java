@@ -6,16 +6,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileView extends JPanel implements MouseListener {
+public class TileView extends JPanel implements MouseListener, MouseMotionListener {
 
     private Tile tile;
     private List<Point> positions;  
     private final BasicStroke fixedStroke;
     private TileController tileController;
     private List<Point> positionsDisponibles = new ArrayList<>(); 
+    private Point hoveredHexagon = null; 
 
     public TileView(Tile tile) {
         this.tile = tile;
@@ -23,6 +25,7 @@ public class TileView extends JPanel implements MouseListener {
         this.fixedStroke = new BasicStroke(3);
         setPreferredSize(new Dimension(400, 400));
         this.addMouseListener(this);
+        this.addMouseMotionListener(this);
         this.positions.add(new Point(490,310)); 
         this.tileController = new TileController(this);
         mettreAJourPositionsDisponibles();
@@ -39,12 +42,22 @@ public class TileView extends JPanel implements MouseListener {
         return null;
     }
 
-    
-
     public void mettreAJourPositionsDisponibles() {
         positionsDisponibles.clear();
         for (Point position : positions) {
-            positionsDisponibles.addAll(tileController.calculerPositionsDisponibles(position, positionsDisponibles));
+            List<Point> nouvellesPositions = tileController.calculerPositionsDisponibles(position, positionsDisponibles);
+            for (Point nouvellePosition : nouvellesPositions) {
+                boolean superpose = false;
+                for (Point positionPrise : positions) {
+                    if (nouvellePosition.equals(positionPrise)) {
+                        superpose = true;
+                        break;
+                    }
+                }
+                if (!superpose) {
+                    positionsDisponibles.add(nouvellePosition);
+                }
+            }
         }
     }
 
@@ -69,36 +82,58 @@ public class TileView extends JPanel implements MouseListener {
             grille.GrilleHexagonal();
         }
 
-        g2d.setColor(new Color(0, 0, 0, 50)); 
-        g2d.setStroke(new BasicStroke(2));
+        g2d.setStroke(new BasicStroke(4));
         for (Point position : positionsDisponibles) {
             int dispoRadius = 50;
-            Shape hexagon = HexagonUtils.createHexagon(position.x, position.y, dispoRadius);
+            Shape hexagon;
+            
+
+            if (position.equals(hoveredHexagon)) {
+                dispoRadius = 75;
+                hexagon = HexagonUtils.createHexagon(position.x, position.y, dispoRadius);
+                g2d.setColor(new Color(255, 0, 0, 50));  
+                g2d.setStroke(new BasicStroke(6));  
+            } else {
+                dispoRadius = 50;
+                hexagon = HexagonUtils.createHexagon(position.x, position.y, dispoRadius);
+                g2d.setColor(new Color(0, 0, 0, 50)); 
+                g2d.setStroke(new BasicStroke(3));  
+                
+            }
             g2d.draw(hexagon);
         }
     }
 
-    public void supprimerHexagone(Point position) {
-        positionsDisponibles.remove(position);
-        repaint();
-    }
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
 
+        Point hexagoneSurvole = tileController.getCentreHexagoneClique(x, y, positionsDisponibles);
+
+        if (hexagoneSurvole != null && !hexagoneSurvole.equals(hoveredHexagon)) {
+            hoveredHexagon = hexagoneSurvole; 
+            repaint(); 
+        } else if (hexagoneSurvole == null && hoveredHexagon != null) {
+            hoveredHexagon = null;  
+            repaint();
+        }
+    }
 
     @Override
-public void mouseClicked(MouseEvent e) {
-    int x = e.getX();
-    int y = e.getY();
+    public void mouseClicked(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
 
-    Point centreHexagone = tileController.getCentreHexagoneClique(x, y, positionsDisponibles);
+        Point centreHexagone = tileController.getCentreHexagoneClique(x, y, positionsDisponibles);
 
-    if (centreHexagone != null) {
-        tileController.PlacerTuile(centreHexagone.x, centreHexagone.y);
-        positionsDisponibles.remove(centreHexagone);
-        mettreAJourPositionsDisponibles(); 
-        repaint();
+        if (centreHexagone != null) {
+            tileController.PlacerTuile(centreHexagone.x, centreHexagone.y);
+            positionsDisponibles.remove(centreHexagone);
+            mettreAJourPositionsDisponibles(); 
+            repaint();
+        }
     }
-}
-
 
     @Override
     public void mousePressed(MouseEvent e) {}
@@ -108,4 +143,6 @@ public void mouseClicked(MouseEvent e) {
     public void mouseEntered(MouseEvent e) {}
     @Override
     public void mouseExited(MouseEvent e) {}
+    @Override
+    public void mouseDragged(MouseEvent e) {}
 }
