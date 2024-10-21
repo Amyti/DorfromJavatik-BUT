@@ -23,10 +23,10 @@ public class TileView extends JPanel implements MouseListener, MouseMotionListen
         this.tile = tile;
         this.positions = new ArrayList<>();
         this.fixedStroke = new BasicStroke(3);
-        setPreferredSize(new Dimension(400, 400));
+        setPreferredSize(new Dimension(2500, 2500));
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
-        this.positions.add(new Point(490,310)); 
+        this.positions.add(new Point(1200,1200)); 
         this.tileController = new TileController(this);
         mettreAJourPositionsDisponibles();
     }
@@ -53,6 +53,7 @@ public class TileView extends JPanel implements MouseListener, MouseMotionListen
                         superpose = true;
                         break;
                     }
+                    
                 }
                 if (!superpose) {
                     positionsDisponibles.add(nouvellePosition);
