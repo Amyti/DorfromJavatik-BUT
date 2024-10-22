@@ -55,7 +55,7 @@ public class DessinerGrilleHexagonal {
                             }
                             g2d.fill(intersection);
                             g2d.setColor(Color.BLACK);
-                            g2d.setStroke(new BasicStroke(1));
+                            g2d.setStroke(new BasicStroke(0));
                             g2d.draw(intersection);
                         }
                     }
@@ -77,7 +77,7 @@ public class DessinerGrilleHexagonal {
                             }
                             g2d.fill(intersection);
                             g2d.setColor(Color.BLACK);
-                            g2d.setStroke(new BasicStroke(1));
+                            g2d.setStroke(new BasicStroke(0));
                             g2d.draw(intersection);
                         }
                     }
@@ -88,7 +88,7 @@ public class DessinerGrilleHexagonal {
             g2d.fill(largeHexagon);
         }
         g2d.setColor(Color.BLACK);
-        g2d.setStroke(new BasicStroke(3));
+        g2d.setStroke(new BasicStroke(5));
         g2d.draw(largeHexagon);
     }
     
@@ -103,15 +103,15 @@ public class DessinerGrilleHexagonal {
         int index = (Math.abs(x + y) % 3);
         switch (terrain) {
             case MER:
-            return getFixedShade(index, new Color(0, 0, 255), new Color(100, 149, 237), new Color(135, 206, 250));
+            return getFixedShade(index, new Color(66, 112, 182), new Color(111, 168, 238), new Color(88, 142, 212));
             case CHAMP:
-            return getFixedShade(index, new Color(255, 255, 0), new Color(240, 230, 140), new Color(255, 223, 0));
+            return getFixedShade(index, new Color(144, 197, 129), new Color(164, 217, 148), new Color(125, 178, 109));
             case PRE:
-            return getFixedShade(index, new Color(0, 128, 0), new Color(144, 238, 144), new Color(34, 139, 34));
+            return getFixedShade(index, new Color(231, 224, 83), new Color(245, 238, 88), new Color(213, 205, 70));
             case FORET:
-            return getFixedShade(index, new Color(0, 100, 0), new Color(01, 139, 34), new Color(02, 180, 67));
+            return getFixedShade(index, new Color(64, 118, 75), new Color(80, 138, 95), new Color(50, 98, 56));
             case MONTAGNE:
-            return getFixedShade(index, new Color(169, 169, 169), new Color(128, 128, 128), new Color(105, 105, 105));
+            return getFixedShade(index, new Color(100, 100, 100), new Color(120, 120, 120), new Color(140, 140, 140));
             default:
             return Color.WHITE;
         }
