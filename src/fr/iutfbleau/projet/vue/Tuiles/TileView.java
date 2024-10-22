@@ -53,6 +53,10 @@ public class TileView extends JPanel implements MouseListener, MouseMotionListen
                         superpose = true;
                         break;
                     }
+                    if(nouvellePosition.x <= 0 || nouvellePosition.x > 2400 || nouvellePosition.y < 95 || nouvellePosition.y > 2390){
+                        superpose = true;
+                        break;
+                    }
                     
                 }
                 if (!superpose) {
