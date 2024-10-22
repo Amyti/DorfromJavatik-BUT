@@ -30,7 +30,6 @@ public class Jeu extends MouseAdapter {
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 
         scrollPane.setDoubleBuffered(true);
-        centerViewOnTile();
         tileView.addMouseListener(this);
         tileView.addMouseMotionListener(this);
 
@@ -38,12 +37,14 @@ public class Jeu extends MouseAdapter {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+        SwingUtilities.invokeLater(this::centerViewOnTile);
     }
 
     private void centerViewOnTile() {
         JViewport viewport = scrollPane.getViewport();
 
-        viewport.setViewPosition(new Point(1250, 1250));
+        viewport.setViewPosition(new Point(1200-540, 1200-360));
     }
 
     @Override
