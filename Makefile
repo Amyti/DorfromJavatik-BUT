@@ -1,24 +1,62 @@
-# Variables
-SRC_DIR = ../src/fr/iutfbleau/projet
+# Nom du projet
+PROJECT_NAME = Dorfromantik
+
+# Dossiers
+SRC_DIR = src
 BUILD_DIR = build
-CLASSPATH = $(BUILD_DIR)
+PACKAGE_DIR = fr/iutfbleau/projet
+MAIN_CLASS = fr.iutfbleau.projet.Main
 
-# Fichiers sources
-CONTROLLER_SRC = $(SRC_DIR)/controller/TileController.java
-MAIN_SRC = $(SRC_DIR)/Main.java
-MODEL_SRC = $(SRC_DIR)/model/Tile.java
-VUE_SRC = $(SRC_DIR)/vue/Tuiles/*.java
+# Commandes
+JAVAC = javac
+JAVA = java
+JAR = jar
+RM = rm -rf
 
-# Cible par défaut
-all: compile
+# Options de compilation
+JAVAC_FLAGS = -d $(BUILD_DIR) -classpath $(BUILD_DIR)
+MAIN_FLAGS = -classpath $(BUILD_DIR)
 
-# Compilation des fichiers
-compile: $(BUILD_DIR)/Main.class
+# Liste des sources
+SRC_FILES = $(wildcard $(SRC_DIR)/$(PACKAGE_DIR)/**/*.java)
 
-$(BUILD_DIR)/Main.class: $(CONTROLLER_SRC) $(MAIN_SRC) $(MODEL_SRC) $(VUE_SRC)
-	javac -d $(BUILD_DIR) -classpath $(CLASSPATH) $(CONTROLLER_SRC)
-	javac -d $(BUILD_DIR) -classpath $(CLASSPATH) $(MAIN_SRC)
+# Cibles par défaut
+all: clean compile
 
-# Lancer l'application
-run:
-	java -classpath $(CLASSPATH) fr.iutfbleau.projet.Main
+# Création du dossier build
+$(BUILD_DIR):
+	@mkdir -p $(BUILD_DIR)
+
+# Nettoyage du dossier build avant la compilation
+clean:
+	$(RM) $(BUILD_DIR)/*
+
+# Compilation des fichiers HexagonUtils
+compile-hexagonutils: $(BUILD_DIR)
+	$(JAVAC) -d $(BUILD_DIR) -classpath $(BUILD_DIR) $(SRC_DIR)/$(PACKAGE_DIR)/vue/Tuiles/HexagonUtils.java
+
+# Compilation des modèles
+compile-models: $(BUILD_DIR)
+	$(JAVAC) -d $(BUILD_DIR) -classpath $(BUILD_DIR) $(SRC_DIR)/$(PACKAGE_DIR)/model/*.java
+
+# Compilation de TileController et des fichiers dans Tuiles
+compile-tuiles: $(BUILD_DIR)
+	$(JAVAC) -d $(BUILD_DIR) -classpath $(BUILD_DIR) $(SRC_DIR)/$(PACKAGE_DIR)/vue/Tuiles/*.java $(SRC_DIR)/$(PACKAGE_DIR)/controller/TileController.java
+
+# Compilation de Jeu.java
+compile-jeu: $(BUILD_DIR)
+	$(JAVAC) -d $(BUILD_DIR) -classpath $(BUILD_DIR) $(SRC_DIR)/$(PACKAGE_DIR)/vue/Jeu.java
+
+# Compilation de Main.java
+compile-main: $(BUILD_DIR)
+	$(JAVAC) -d $(BUILD_DIR) -classpath $(BUILD_DIR) $(SRC_DIR)/$(PACKAGE_DIR)/Main.java
+
+# Compilation complète
+compile: $(BUILD_DIR) compile-hexagonutils compile-models compile-tuiles compile-jeu compile-main
+
+# Exécution du projet
+run: compile
+	$(JAVA) $(MAIN_FLAGS) $(MAIN_CLASS)
+
+.PHONY: all clean compile-hexagonutils compile-models compile-tuiles compile-jeu compile-main run
+

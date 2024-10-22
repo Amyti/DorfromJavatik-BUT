@@ -1,58 +1,64 @@
 package controller;
 
 import model.*;
+import model.Tile.TerrainType;
 import vue.*;
 
+
 import java.awt.*;
-import java.util.List;  
+import java.util.List;
+import java.util.Random;
 import java.util.ArrayList;   
 
 public class TileController {
     private TileView tileView;
-
+    
     public TileController(TileView tileView) {
         this.tileView = tileView;
     }
+    
+ public void PlacerTuile(int x, int y) {
+    Tile tuileAleatoire = new Tile(getRandomTerrainType(), getRandomTerrainType());
 
-    public void PlacerTuile(int x, int y) {
-        Point autreTuiles = getLastTileCenter(); 
-    
-        if (autreTuiles == null) {
-            Point point = new Point(x, y);
-            tileView.ajouterPosition(point);
-            tileView.mettreAJourPositionsDisponibles(); 
-            tileView.repaint();
-            return;
-        }
-    
+    Point autreTuiles = getLastTileCenter(); 
+
+    if (autreTuiles == null) {
         Point point = new Point(x, y);
-
+        tileView.ajouterTuile(point, tuileAleatoire);
         tileView.ajouterPosition(point);
         tileView.mettreAJourPositionsDisponibles(); 
         tileView.repaint();
-    
-        System.out.println("Centre de la tuile placée : (" + point.x + ", " + point.y + ")");
+        return;
     }
+
+    Point point = new Point(x, y);
+    tileView.ajouterTuile(point, tuileAleatoire);
+    tileView.ajouterPosition(point);
+    tileView.mettreAJourPositionsDisponibles(); 
+    tileView.repaint();
+
+    System.out.println("Centre de la tuile placée : (" + point.x + ", " + point.y + ")");
+}
 
     
     
     public Point getCentreHexagoneClique(int x, int y, List<Point> positionsDisponibles) {
         int dispoRadius = 50;
-    
+        
         for (Point position : positionsDisponibles) {
             Shape hexagon = HexagonUtils.createHexagon(position.x, position.y, dispoRadius);
-    
+            
             if (hexagon.contains(x, y)) {
                 return position;
             }
         }
         return null; 
     }
-
+    
     public Point getLastTileCenter() {
         return tileView.getLastTilePosition();
     }
-
+    
     public boolean tuileDejaPresente(Point position, List<Point> positionsPrises) {
         for (Point prise : positionsPrises) {
             if (position.equals(prise)) {
@@ -61,42 +67,42 @@ public class TileController {
         }
         return false;
     }
-
-
+    
+    
     /*public Point verifPoint(Point autreTuiles, int x, int y){
-        Point point;
-        if (x > autreTuiles.x - 25 && x < autreTuiles.x + 25) {
-            if (y > autreTuiles.y) {
-                point = new Point(autreTuiles.x, autreTuiles.y + 170);
-            } else {
-                point = new Point(autreTuiles.x, autreTuiles.y - 170);
-            }
-        }
-        else if (x > autreTuiles.x) {
-            if (y > autreTuiles.y) {
-                point = new Point(autreTuiles.x + 150, autreTuiles.y + 85);
-            } else {
-                point = new Point(autreTuiles.x + 150 , autreTuiles.y - 85);
-            }
-        } else if(x < autreTuiles.x){
-            if (y > autreTuiles.y) {
-                point = new Point(autreTuiles.x - 150, autreTuiles.y + 85);
-            } else {
-                point = new Point(autreTuiles.x - 150, autreTuiles.y - 85);
-            }
-        }else{
-            point = new Point(autreTuiles.x, autreTuiles.y);
-        }
-
-        return point;
+    Point point;
+    if (x > autreTuiles.x - 25 && x < autreTuiles.x + 25) {
+    if (y > autreTuiles.y) {
+    point = new Point(autreTuiles.x, autreTuiles.y + 170);
+    } else {
+    point = new Point(autreTuiles.x, autreTuiles.y - 170);
+    }
+    }
+    else if (x > autreTuiles.x) {
+    if (y > autreTuiles.y) {
+    point = new Point(autreTuiles.x + 150, autreTuiles.y + 85);
+    } else {
+    point = new Point(autreTuiles.x + 150 , autreTuiles.y - 85);
+    }
+    } else if(x < autreTuiles.x){
+    if (y > autreTuiles.y) {
+    point = new Point(autreTuiles.x - 150, autreTuiles.y + 85);
+    } else {
+    point = new Point(autreTuiles.x - 150, autreTuiles.y - 85);
+    }
+    }else{
+    point = new Point(autreTuiles.x, autreTuiles.y);
+    }
+    
+    return point;
     }*/
-
-   
-
+    
+    
+    
     public List<Point> calculerPositionsDisponibles(Point centreTuile, List<Point> positionsPrises) {
         List<Point> positionsDisponibles = new ArrayList<>();
         List<Point> positionFiltree = new ArrayList<>();
-
+        
         int horizontalOffset = 150;
         int verticalOffset = 85;
         int verticalFullOffset = 170;
@@ -113,9 +119,15 @@ public class TileController {
                 positionFiltree.add(position);
             }
         }
-
+        
         return positionFiltree;
     }
+    
+    private TerrainType getRandomTerrainType() {
+    TerrainType[] types = TerrainType.values();
+    Random random = new Random();
+    return types[random.nextInt(types.length)];
+}
 
-
+    
 }
