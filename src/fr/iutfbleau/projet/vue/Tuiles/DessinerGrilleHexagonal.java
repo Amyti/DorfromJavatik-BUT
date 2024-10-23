@@ -28,7 +28,7 @@ public class DessinerGrilleHexagonal {
             double terrain1Ratio = tile.getTerrain1Ratio();
 
             if (terrain1Ratio != 0.5) {
-                double apothemeAngle = Math.PI / 2;
+                double apothemeAngle = 3.9 / 2;
 
                 for (int row = -rows; row <= rows; row++) {
                     for (int col = -cols; col <= cols; col++) {

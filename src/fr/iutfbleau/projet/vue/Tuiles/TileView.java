@@ -123,7 +123,25 @@ public class TileView extends JPanel implements MouseListener, MouseMotionListen
             g2d.draw(hexagon);
         }
     }
-    
+    public List<Point> positionadjacentes(Point centreTuile) {
+        List<Point> positionsAdjacentes = new ArrayList<>();
+        int decalageHorizontal = 150;
+        int decalageVertical = 85;
+        int decalageVerticalComplet = 170;
+ 
+        positionsAdjacentes.add(new Point(centreTuile.x, centreTuile.y - decalageVerticalComplet));
+        positionsAdjacentes.add(new Point(centreTuile.x, centreTuile.y + decalageVerticalComplet));
+        positionsAdjacentes.add(new Point(centreTuile.x + decalageHorizontal, centreTuile.y - decalageVertical));
+        positionsAdjacentes.add(new Point(centreTuile.x + decalageHorizontal, centreTuile.y + decalageVertical));
+        positionsAdjacentes.add(new Point(centreTuile.x - decalageHorizontal, centreTuile.y - decalageVertical));
+        positionsAdjacentes.add(new Point(centreTuile.x - decalageHorizontal, centreTuile.y + decalageVertical));
+
+        return positionsAdjacentes;
+    }
+
+    public Tile getTileAtPosition(Point point) {
+        return tuilesPlacees.get(point);
+    }
     
     @Override
     public void mouseMoved(MouseEvent e) {
