@@ -1,4 +1,4 @@
-# Jeu du Sudoku
+# Jeu du Dofromantik
 
 ## Lancement 
 
