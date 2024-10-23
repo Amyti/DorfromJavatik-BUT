@@ -15,7 +15,6 @@ import java.util.Random;
 
 public class TileView extends JPanel implements MouseListener, MouseMotionListener {
     
-    private Tile tile;
     private List<Point> positions;  
     private final BasicStroke fixedStroke;
     private TileController tileController;
@@ -29,8 +28,7 @@ public class TileView extends JPanel implements MouseListener, MouseMotionListen
         positions.add(point); 
     }
     
-    public TileView(Tile tile) {
-        this.tile = tile;
+    public TileView() {
         this.positions = new ArrayList<>();
         this.fixedStroke = new BasicStroke(3);
         setPreferredSize(new Dimension(2500, 2500));
