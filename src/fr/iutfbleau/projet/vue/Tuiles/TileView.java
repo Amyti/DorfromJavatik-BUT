@@ -99,18 +99,8 @@ public class TileView extends JPanel implements MouseListener, MouseMotionListen
             }
         }
     
-        if (!listeTuilesGenerees.isEmpty()) {
-            Tile derniereTuile = listeTuilesGenerees.get(listeTuilesGenerees.size() - 1);  
-            int centreX = 100;  
-            int centreY = getHeight() - 100;
-            Shape hexagon = HexagonUtils.createHexagon(centreX, centreY, 50);
-            g2d.setColor(Color.BLACK);
-            g2d.draw(hexagon);
-    
-            DessinerGrilleHexagonal grille = new DessinerGrilleHexagonal(g2d, centreX, centreY, 6, 6, 20, hexagon, derniereTuile);
-            grille.GrilleHexagonal();
-        }
-
+/*------------------------------------------ Hexagone de previsualisation --------------------------------------------------------------------------------- */
+        
         g2d.setStroke(new BasicStroke(4));
         for (Point position : positionsDisponibles) {
             int dispoRadius = 50;
@@ -128,6 +118,19 @@ public class TileView extends JPanel implements MouseListener, MouseMotionListen
                 g2d.setStroke(new BasicStroke(3));  
             }
             g2d.draw(hexagon);
+        }
+    }
+
+    public Tile getProchaineTuile() {
+        if (!listeTuilesGenerees.isEmpty()) {
+            return listeTuilesGenerees.get(listeTuilesGenerees.size() - 1);
+        }
+        return null;
+    }
+
+    public void retirerProchaineTuile() {
+        if (!listeTuilesGenerees.isEmpty()) {
+            listeTuilesGenerees.remove(listeTuilesGenerees.size() - 1);
         }
     }
     

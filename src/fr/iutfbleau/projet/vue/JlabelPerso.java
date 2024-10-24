@@ -7,12 +7,12 @@ import java.io.IOException;
 
 public class JlabelPerso extends JLabel {
 
-    public JlabelPerso(String text) {
+    public JlabelPerso(String text, int size) {
         super(text);
 
         try {
             Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("../res/Zorque.otf"));
-            customFont = customFont.deriveFont(Font.BOLD, 25);
+            customFont = customFont.deriveFont(Font.BOLD, size);
             setFont(customFont);
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
