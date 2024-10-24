@@ -21,6 +21,7 @@ public class TileView extends JPanel implements MouseListener, MouseMotionListen
     private List<Point> positionsDisponibles = new ArrayList<>(); 
     private Point hoveredHexagon = null; 
     private Map<Point, Tile> tuilesPlacees = new HashMap<>();
+    private List<Tile> listeTuilesGenerees = new ArrayList<>(); 
     
     
     public void ajouterTuile(Point point, Tile tile) {
@@ -37,7 +38,8 @@ public class TileView extends JPanel implements MouseListener, MouseMotionListen
         this.tileController = new TileController(this);
     
         Tile tuileAleatoire = new Tile(getRandomTerrainType(), getRandomTerrainType());
-    
+        listeTuilesGenerees.add(tuileAleatoire);  
+          
         Point pointInitial = new Point(1200, 1200);
         ajouterTuile(pointInitial, tuileAleatoire);
         ajouterPosition(pointInitial);
@@ -88,22 +90,27 @@ public class TileView extends JPanel implements MouseListener, MouseMotionListen
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
         for (Point position : this.positions) {
-            int centerX = position.x;
-            int centerY = position.y;
-            int largeRadius = 100;
-            int smallRadius = 20;
-            int rows = 6;
-            int cols = 6;
-            
             Tile tileAtPosition = tuilesPlacees.get(position);
             
             if (tileAtPosition != null) {
-                Shape largeHexagon = HexagonUtils.createHexagon(centerX, centerY, largeRadius);
-                DessinerGrilleHexagonal grille = new DessinerGrilleHexagonal(g2d, centerX, centerY, rows, cols, smallRadius, largeHexagon, tileAtPosition);
+                Shape largeHexagon = HexagonUtils.createHexagon(position.x, position.y, 100);
+                DessinerGrilleHexagonal grille = new DessinerGrilleHexagonal(g2d, position.x, position.y, 6, 6, 20, largeHexagon, tileAtPosition);
                 grille.GrilleHexagonal();
             }
         }
-        
+    
+        if (!listeTuilesGenerees.isEmpty()) {
+            Tile derniereTuile = listeTuilesGenerees.get(listeTuilesGenerees.size() - 1);  
+            int centreX = 100;  
+            int centreY = getHeight() - 100;
+            Shape hexagon = HexagonUtils.createHexagon(centreX, centreY, 50);
+            g2d.setColor(Color.BLACK);
+            g2d.draw(hexagon);
+    
+            DessinerGrilleHexagonal grille = new DessinerGrilleHexagonal(g2d, centreX, centreY, 6, 6, 20, hexagon, derniereTuile);
+            grille.GrilleHexagonal();
+        }
+
         g2d.setStroke(new BasicStroke(4));
         for (Point position : positionsDisponibles) {
             int dispoRadius = 50;
@@ -123,6 +130,7 @@ public class TileView extends JPanel implements MouseListener, MouseMotionListen
             g2d.draw(hexagon);
         }
     }
+    
     public List<Point> positionadjacentes(Point centreTuile) {
         List<Point> positionsAdjacentes = new ArrayList<>();
         int decalageHorizontal = 150;
@@ -172,10 +180,15 @@ public class TileView extends JPanel implements MouseListener, MouseMotionListen
         
         Point centreHexagone = tileController.getCentreHexagoneClique(x, y, positionsDisponibles);
         
-        if (centreHexagone != null) {
-            tileController.PlacerTuile(centreHexagone.x, centreHexagone.y);
+        if (centreHexagone != null && !listeTuilesGenerees.isEmpty()) {
+            Tile tuileAPlacer = listeTuilesGenerees.get(listeTuilesGenerees.size() - 1);
+            tileController.PlacerTuile(centreHexagone.x, centreHexagone.y, tuileAPlacer); 
             positionsDisponibles.remove(centreHexagone);
             mettreAJourPositionsDisponibles(); 
+
+            Tile nouvelleTuile = new Tile(getRandomTerrainType(), getRandomTerrainType());
+            listeTuilesGenerees.add(nouvelleTuile);
+    
             repaint();
         }
     }

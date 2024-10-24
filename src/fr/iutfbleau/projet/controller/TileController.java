@@ -18,35 +18,22 @@ public class TileController {
         this.tileView = tileView;
     }
     
-    public void PlacerTuile(int x, int y) {
-        Tile tuileAleatoire = new Tile(getRandomTerrainType(), getRandomTerrainType());
-        
-        Point autreTuiles = getLastTileCenter(); 
-        
-        if (autreTuiles == null) {
-            Point point = new Point(x, y);
-            tileView.ajouterTuile(point, tuileAleatoire);
-            tileView.ajouterPosition(point);
-            tileView.mettreAJourPositionsDisponibles(); 
-            tileView.repaint();
-            return;
-        }
-        
+    public void PlacerTuile(int x, int y, Tile tuileAPlacer) {
         Point point = new Point(x, y);
-        tileView.ajouterTuile(point, tuileAleatoire);
+        tileView.ajouterTuile(point, tuileAPlacer);
         tileView.ajouterPosition(point);
-        ajoutpoints(point, tuileAleatoire);
-        tileView.mettreAJourPositionsDisponibles(); 
+        ajoutpoints(point, tuileAPlacer);
+        tileView.mettreAJourPositionsDisponibles();
         tileView.repaint();
         
         System.out.println("Centre de la tuile placée : (" + point.x + ", " + point.y + ")");
     }
     
-     private void ajoutpoints(Point positionNouvelleTuile, Tile nouvelleTuile) {
+    private void ajoutpoints(Point positionNouvelleTuile, Tile nouvelleTuile) {
         List<Point> positionsAdjacentes = tileView.positionadjacentes(positionNouvelleTuile);
         for (Point posAdj : positionsAdjacentes) {
             Tile tuileAdjacente = tileView.getTileAtPosition(posAdj);
-
+            
             if (tuileAdjacente != null) {
                 boolean pointGagné = comparerTerrainsEtendus(nouvelleTuile, tuileAdjacente);
                 if (pointGagné) {
@@ -55,20 +42,20 @@ public class TileController {
             }
         }
     }
-
+    
     private boolean comparerTerrainsEtendus(Tile tuile1, Tile tuile2) {
         boolean pointGagné = false;
-
+        
         if (tuile1.getTerrain1() == tuile2.getTerrain1() || tuile1.getTerrain1() == tuile2.getTerrain2()) {
             score++;
             pointGagné = true;
         }
-
+        
         if (tuile1.getTerrain2() != null && (tuile1.getTerrain2() == tuile2.getTerrain1() || tuile1.getTerrain2() == tuile2.getTerrain2())) {
             score++;
             pointGagné = true;
         }
-
+        
         return pointGagné;
     }
     
