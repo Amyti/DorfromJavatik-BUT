@@ -112,25 +112,16 @@ public void paintComponent(Graphics g) {
         Tile tileAtPosition = tuilesPlacees.get(position);
 
         if (tileAtPosition != null) {
-            // Créez un hexagone pour représenter la tuile
             Shape largeHexagon = HexagonUtils.createHexagon(position.x, position.y, 100);
-
-            // Sauvegardez la transformation actuelle
             AffineTransform oldTransform = g2d.getTransform();
-
-            // Appliquez la rotation de la tuile
             g2d.rotate(Math.toRadians(tileAtPosition.getRotationAngle()), position.x, position.y);
-
-            // Dessinez la tuile avec la rotation appliquée
             DessinerGrilleHexagonal grille = new DessinerGrilleHexagonal(g2d, position.x, position.y, 6, 6, 20, largeHexagon, tileAtPosition);
             grille.GrilleHexagonal();
 
-            // Restaurez la transformation originale
             g2d.setTransform(oldTransform);
         }
     }
 
-    // Dessinez les hexagones disponibles
     g2d.setStroke(new BasicStroke(4));
     for (Point position : positionsDisponibles) {
         int dispoRadius = 50;
