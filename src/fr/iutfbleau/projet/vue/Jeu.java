@@ -2,12 +2,11 @@ package vue;
 
 import javax.swing.*;
 import java.awt.*;
-import javax.swing.border.LineBorder;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import model.*;
+import controller.TileController;
 
-public class Jeu extends MouseAdapter {
+public class Jeu extends MouseAdapter implements KeyListener {
 
     private JFrame frame;
     private TileView tileView;
@@ -15,16 +14,15 @@ public class Jeu extends MouseAdapter {
     private JScrollPane scrollPane;
     private Point lastMousePosition;
     private JlabelPerso score;
-    private JButton rotateButton;
+    private TileController tileController;
 
     public Jeu() {
-        LineBorder border = new LineBorder(Color.BLACK, 5);
-
         frame = new JFrame("Deformantique");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1080, 720);
-
         tileView = new TileView();
+        tileController = new TileController(tileView);
+
         tileView.setPreferredSize(new Dimension(2500, 2500));
 
         Tile prochaineTuile = tileView.getProchaineTuile();
@@ -44,8 +42,7 @@ public class Jeu extends MouseAdapter {
         JPanel mainScreen = new JPanel(new GridBagLayout());
         JPanel sideBar = new JPanel(new GridBagLayout());  
         score = new JlabelPerso("Score : 0", 25);
-        JlabelPerso previsualisationLabel = new JlabelPerso("Prochaine tuile", 15); 
-        rotateButton = new JButton("Pivoter Tuile");
+        JlabelPerso previsualisationLabel = new JlabelPerso("Prochaine tuile", 10);
 
         gbc.gridx = 0; 
         gbc.gridy = 0; 
@@ -57,43 +54,38 @@ public class Jeu extends MouseAdapter {
         sideBar.setBackground(Color.WHITE);
         sideBar.setPreferredSize(new Dimension(270, 720));  
         sideBar.setMinimumSize(new Dimension(270, 720));   
-        sideBar.setBorder(border);
+        sideBar.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
 
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
         gbc.weighty = 0.1;
         gbc.anchor = GridBagConstraints.NORTH; 
+        gbc.insets = new Insets(10, 10, 10, 10);  
         sideBar.add(score, gbc);
 
-        gbc.gridy = 2;
+        gbc.gridy = 1;
         gbc.weighty = 0.05; 
-        gbc.anchor = GridBagConstraints.CENTER; 
         sideBar.add(previsualisationLabel, gbc);
 
-        gbc.gridy = 3;
-        gbc.weighty = 0.2;
+        gbc.gridy = 2;
+        gbc.weighty = 0.6;
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.anchor = GridBagConstraints.CENTER;
         sideBar.add(previewPanel, gbc);
 
-        gbc.gridy = 4;
-        gbc.weighty = 0.05;
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.anchor = GridBagConstraints.SOUTH; 
-        sideBar.add(rotateButton, gbc);
-
-        gbc.gridx = 1; 
+        gbc.gridx = 1;
         gbc.gridy = 0;
-        gbc.weightx = 0.25;
-        gbc.weighty = 1.0;
+        gbc.weightx = 0.25; 
         gbc.fill = GridBagConstraints.BOTH;
-        mainScreen.add(sideBar, gbc);  
+        mainScreen.add(sideBar, gbc);
 
         frame.add(mainScreen);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+        frame.addKeyListener(this);
+        frame.setFocusable(true); 
 
         SwingUtilities.invokeLater(this::centerViewOnTile);
     }
@@ -139,5 +131,22 @@ public class Jeu extends MouseAdapter {
     public void mouseClicked(MouseEvent e) {
         tileView.mouseClicked(e);
         previewPanel.setProchaineTuile(tileView.getProchaineTuile());
+        int scoreFinal = tileController.getScore();
+        score.setText("Score : " + scoreFinal);
     }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            previewPanel.rotateTile(); 
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            previewPanel.rotateTile(); 
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {}
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
 }

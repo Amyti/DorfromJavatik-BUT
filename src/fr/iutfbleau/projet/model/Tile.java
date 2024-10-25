@@ -12,23 +12,31 @@ public class Tile {
     private boolean hasTwoTerrains;
     private boolean isTerrain1OnTopOrLeft; 
     private double terrain1Ratio;
+    private double rotationAngle;
 
     public Tile(TerrainType terrain1) {
         this.terrain1 = terrain1;
         this.hasTwoTerrains = false;
         this.terrain1Ratio = 1.0; 
+        this.isTerrain1OnTopOrLeft = true; 
+        this.rotationAngle = 0;
     }
-
 
     public Tile(TerrainType terrain1, TerrainType terrain2) {
         this.terrain1 = terrain1;
         this.terrain2 = terrain2;
         this.hasTwoTerrains = true;
-        this.isTerrain1OnTopOrLeft = new Random().nextBoolean();
-        
-        Random random = new Random();
-        double[] possibleRatios = {1.0, 0.5, 0.2, 0.8}; 
-        this.terrain1Ratio = possibleRatios[random.nextInt(possibleRatios.length)];
+        this.isTerrain1OnTopOrLeft = new Random().nextBoolean(); 
+        this.terrain1Ratio = new Random().nextDouble(); 
+        this.rotationAngle = new Random().nextInt(6) * 60; 
+    }
+
+    public void setRotationAngle(double angle) {
+        this.rotationAngle = angle;
+    }
+
+    public double getRotationAngle() {
+        return rotationAngle;
     }
 
     public TerrainType getTerrain1() {
