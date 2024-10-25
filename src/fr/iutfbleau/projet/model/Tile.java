@@ -69,6 +69,7 @@ public class Tile {
         return terrain1Ratio;
     }
     
+    
     public static List<Tile> series1() {
         List<Tile> serieTuiles = new ArrayList<>();
         

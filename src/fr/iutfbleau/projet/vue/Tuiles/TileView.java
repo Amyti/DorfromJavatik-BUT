@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.awt.geom.AffineTransform;
+
 
 public class TileView extends JPanel implements MouseListener, MouseMotionListener {
     
@@ -100,41 +102,55 @@ public class TileView extends JPanel implements MouseListener, MouseMotionListen
     }
     
     @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        
-        for (Point position : this.positions) {
-            Tile tileAtPosition = tuilesPlacees.get(position);
-            
-            if (tileAtPosition != null) {
-                Shape largeHexagon = HexagonUtils.createHexagon(position.x, position.y, 100);
-                DessinerGrilleHexagonal grille = new DessinerGrilleHexagonal(g2d, position.x, position.y, 6, 6, 20, largeHexagon, tileAtPosition);
-                grille.GrilleHexagonal();
-            }
-        }
-        
-        g2d.setStroke(new BasicStroke(4));
-        for (Point position : positionsDisponibles) {
-            int dispoRadius = 50;
-            Shape hexagon;
-            
-            if (position.equals(hoveredHexagon)) {
-                dispoRadius = 75;
-                hexagon = HexagonUtils.createHexagon(position.x, position.y, dispoRadius);
-                g2d.setColor(new Color(255, 0, 0, 50));
-                g2d.setStroke(new BasicStroke(6));
-            } else {
-                dispoRadius = 50;
-                hexagon = HexagonUtils.createHexagon(position.x, position.y, dispoRadius);
-                g2d.setColor(new Color(0, 0, 0, 50));
-                g2d.setStroke(new BasicStroke(3));
-            }
-            g2d.draw(hexagon);
+public void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    Graphics2D g2d = (Graphics2D) g;
+
+    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+    for (Point position : this.positions) {
+        Tile tileAtPosition = tuilesPlacees.get(position);
+
+        if (tileAtPosition != null) {
+            // Créez un hexagone pour représenter la tuile
+            Shape largeHexagon = HexagonUtils.createHexagon(position.x, position.y, 100);
+
+            // Sauvegardez la transformation actuelle
+            AffineTransform oldTransform = g2d.getTransform();
+
+            // Appliquez la rotation de la tuile
+            g2d.rotate(Math.toRadians(tileAtPosition.getRotationAngle()), position.x, position.y);
+
+            // Dessinez la tuile avec la rotation appliquée
+            DessinerGrilleHexagonal grille = new DessinerGrilleHexagonal(g2d, position.x, position.y, 6, 6, 20, largeHexagon, tileAtPosition);
+            grille.GrilleHexagonal();
+
+            // Restaurez la transformation originale
+            g2d.setTransform(oldTransform);
         }
     }
+
+    // Dessinez les hexagones disponibles
+    g2d.setStroke(new BasicStroke(4));
+    for (Point position : positionsDisponibles) {
+        int dispoRadius = 50;
+        Shape hexagon;
+
+        if (position.equals(hoveredHexagon)) {
+            dispoRadius = 75;
+            hexagon = HexagonUtils.createHexagon(position.x, position.y, dispoRadius);
+            g2d.setColor(new Color(255, 0, 0, 50));
+            g2d.setStroke(new BasicStroke(6));
+        } else {
+            dispoRadius = 50;
+            hexagon = HexagonUtils.createHexagon(position.x, position.y, dispoRadius);
+            g2d.setColor(new Color(0, 0, 0, 50));
+            g2d.setStroke(new BasicStroke(3));
+        }
+        g2d.draw(hexagon);
+    }
+}
+
     
     public Tile getProchaineTuile() {
         if (!listeTuilesGenerees.isEmpty()) {
