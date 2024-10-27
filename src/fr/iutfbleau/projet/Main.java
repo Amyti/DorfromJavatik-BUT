@@ -1,9 +1,9 @@
 package fr.iutfbleau.projet;
 
-import model.Tile;
-import vue.Jeu;
+import fr.iutfbleau.projet.model.Tile;
+import fr.iutfbleau.projet.vue.Jeu;
 import javax.swing.*;
-import vue.MenuAvecSeriesBD;
+import fr.iutfbleau.projet.vue.MenuAvecSeriesBD;
 
 /**
  * La classe Main est le point d'entrée de l'application.

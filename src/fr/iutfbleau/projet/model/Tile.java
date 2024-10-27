@@ -6,6 +6,7 @@ import java.util.Random;
  * La classe Tile représente une tuile avec des types de terrains et des propriétés telles que
  * l'angle de rotation, le ratio de séparation et la disposition des terrains.
  */
+
 public class Tile {
 
     /**
