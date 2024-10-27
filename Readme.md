@@ -17,10 +17,8 @@ Se placer dans le fichier build
 ### Crédits :
 
   
-  - [Amir Kabbouri](@kabbouri)
+  - [Amir Kabbouri](https://grond.iut-fbleau.fr/kabbouri)
 
-  - [Tarehi Zaabay](@zaabay)
+  - [Tarehi Zaabay](https://grond.iut-fbleau.fr/zaabay)
 
-  - [Athiran Nagathurai](@nagathur)
-
-  
+  - [Athiran Nagathurai](https://grond.iut-fbleau.fr/nagathur)
