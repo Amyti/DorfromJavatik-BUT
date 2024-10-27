@@ -6,8 +6,18 @@ import model.ScoreManager;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * La classe ScoreTable affiche un tableau des scores pour une série spécifique.
+ * Elle récupère les scores à partir du `ScoreManager` et les présente dans une fenêtre avec une table.
+ */
 public class ScoreTable extends JFrame {
 
+    /**
+     * Constructeur de la classe ScoreTable.
+     * Initialise et affiche une fenêtre avec un tableau des scores pour la série spécifiée.
+     *
+     * @param seriesId L'identifiant de la série pour laquelle afficher les scores.
+     */
     public ScoreTable(int seriesId) {
         setTitle("Tableau des Scores - Série " + seriesId);
         setSize(400, 300);

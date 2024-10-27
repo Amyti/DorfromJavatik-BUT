@@ -6,6 +6,11 @@ import java.awt.event.*;
 import model.*;
 import java.util.List;
 
+/**
+ * La classe Jeu est responsable de la gestion de l'interface principale du jeu.
+ * Elle initialise les composants graphiques, gère les interactions de souris et de clavier,
+ * et affiche la vue des tuiles ainsi que la barre latérale avec la prévisualisation des tuiles.
+ */
 public class Jeu extends MouseAdapter implements KeyListener {
 
     private JFrame frame;
@@ -14,8 +19,13 @@ public class Jeu extends MouseAdapter implements KeyListener {
     private JScrollPane scrollPane;
     private Point lastMousePosition;
     private JlabelPerso score;
-    private int seriesId; 
+    private int seriesId;
 
+    /**
+     * Constructeur de la classe Jeu.
+     *
+     * @param seriesId L'identifiant de la série de tuiles utilisée dans cette partie.
+     */
     public Jeu(int seriesId) {
         this.seriesId = seriesId;
         frame = new JFrame("Deformantique");
@@ -28,7 +38,7 @@ public class Jeu extends MouseAdapter implements KeyListener {
             frame.dispose();
             return;
         }
-        tileView = new TileView(tiles, seriesId); 
+        tileView = new TileView(tiles, seriesId);
 
         tileView.setPreferredSize(new Dimension(2500, 2500));
 
@@ -48,9 +58,10 @@ public class Jeu extends MouseAdapter implements KeyListener {
         GridBagConstraints gbc = new GridBagConstraints();
         JPanel mainScreen = new JPanel(new GridBagLayout());
         JPanel sideBar = new JPanel(new GridBagLayout());
-        score = new JlabelPerso("Score : 0", 25); 
+        score = new JlabelPerso("Score : 0", 25);
         JlabelPerso previsualisationLabel = new JlabelPerso("Prochaine tuile : ", 20);
 
+        // Configuration de la disposition des éléments principaux
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 0.75;
@@ -96,16 +107,30 @@ public class Jeu extends MouseAdapter implements KeyListener {
         SwingUtilities.invokeLater(this::centerViewOnTile);
     }
 
+    /**
+     * Centre la vue du panneau de défilement sur la tuile initiale.
+     */
     private void centerViewOnTile() {
         JViewport viewport = scrollPane.getViewport();
         viewport.setViewPosition(new Point(1200 - scrollPane.getWidth() / 2, 1200 - scrollPane.getHeight() / 2));
     }
 
+    /**
+     * Gère le clic de la souris pour définir la dernière position de la souris
+     * lors du déplacement du panneau.
+     *
+     * @param e L'événement de clic de souris.
+     */
     @Override
     public void mousePressed(MouseEvent e) {
         lastMousePosition = SwingUtilities.convertPoint(tileView, e.getPoint(), scrollPane.getViewport());
     }
 
+    /**
+     * Gère le glissement de la souris pour déplacer la vue du panneau en fonction du mouvement de la souris.
+     *
+     * @param e L'événement de glissement de souris.
+     */
     @Override
     public void mouseDragged(MouseEvent e) {
         JViewport viewport = (JViewport) scrollPane.getViewport();
@@ -118,30 +143,33 @@ public class Jeu extends MouseAdapter implements KeyListener {
         int maxViewX = tileView.getWidth() - viewport.getWidth();
         int maxViewY = tileView.getHeight() - viewport.getHeight();
 
-        if (newViewX < 0) {
-            newViewX = 0;
-        } else if (newViewX > maxViewX) {
-            newViewX = maxViewX;
-        }
-        if (newViewY < 0) {
-            newViewY = 0;
-        } else if (newViewY > maxViewY) {
-            newViewY = maxViewY;
-        }
+        newViewX = Math.max(0, Math.min(newViewX, maxViewX));
+        newViewY = Math.max(0, Math.min(newViewY, maxViewY));
 
         viewport.setViewPosition(new Point(newViewX, newViewY));
         lastMousePosition = newMousePosition;
     }
 
+    /**
+     * Gère le clic de la souris pour placer une tuile sur le panneau et mettre à jour la prévisualisation
+     * et le score.
+     *
+     * @param e L'événement de clic de souris.
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
-        tileView.mouseClicked(e); 
-        previewPanel.setProchaineTuile(tileView.getProchaineTuile()); 
+        tileView.mouseClicked(e);
+        previewPanel.setProchaineTuile(tileView.getProchaineTuile());
         int currentScore = tileView.getScore();
         score.setText("Score : " + currentScore);
         score.repaint();
     }
 
+    /**
+     * Gère la pression d'une touche pour faire pivoter la tuile en prévisualisation.
+     *
+     * @param e L'événement de pression de touche.
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {

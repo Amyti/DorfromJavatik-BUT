@@ -1,4 +1,5 @@
 package vue;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,6 +12,10 @@ import vue.Jeu;
 import vue.MyButton;
 import vue.BackgroundPanel;
 
+/**
+ * La classe MenuAvecSeriesBD représente le menu principal du jeu, permettant de sélectionner une série,
+ * de démarrer le jeu, d'afficher les scores, ou de quitter.
+ */
 public class MenuAvecSeriesBD extends JFrame {
 
     private JComboBox<Serie> comboBoxSeries;
@@ -19,6 +24,10 @@ public class MenuAvecSeriesBD extends JFrame {
     private MyButton boutonScores;
     private MyButton boutonCommentJouer;
 
+    /**
+     * Constructeur de la classe MenuAvecSeriesBD.
+     * Initialise et configure l'interface utilisateur du menu principal.
+     */
     public MenuAvecSeriesBD() {
         setTitle("Menu");
         setSize(1080, 720);
@@ -28,8 +37,8 @@ public class MenuAvecSeriesBD extends JFrame {
         backgroundPanel.setLayout(new BorderLayout());
         setContentPane(backgroundPanel);
 
-        JLabel logoLabel = new JLabel(new ImageIcon("../res/logo.png")); 
-        
+        JLabel logoLabel = new JLabel(new ImageIcon("../res/logo.png"));
+
         JPanel centerPanel = new JPanel(new GridBagLayout());
         centerPanel.setOpaque(false);
 
@@ -103,19 +112,28 @@ public class MenuAvecSeriesBD extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Configure un bouton personnalisé avec un style et des couleurs spécifiques.
+     *
+     * @param text Le texte à afficher sur le bouton.
+     * @return Le bouton personnalisé configuré.
+     */
     private MyButton setupButton(String text) {
         MyButton button = new MyButton();
         button.setText(text);
         button.setRadius(15);
-        button.setPreferredSize(new Dimension(200, 50)); 
-        button.setColor(new Color(139, 69, 19)); 
-        button.setColorOver(new Color(160, 82, 45)); 
-        button.setColorClick(new Color(101, 67, 33)); 
-        button.setBorderColor(new Color(92, 51, 23)); 
+        button.setPreferredSize(new Dimension(200, 50));
+        button.setColor(new Color(139, 69, 19));
+        button.setColorOver(new Color(160, 82, 45));
+        button.setColorClick(new Color(101, 67, 33));
+        button.setBorderColor(new Color(92, 51, 23));
         button.setForeground(Color.WHITE);
         return button;
     }
 
+    /**
+     * Charge les séries de tuiles depuis la base de données et les ajoute au comboBoxSeries.
+     */
     private void chargerSeries() {
         SerieBD serieDAO = new SerieBD();
         List<Serie> seriesList = serieDAO.getSeries();
@@ -125,6 +143,9 @@ public class MenuAvecSeriesBD extends JFrame {
         }
     }
 
+    /**
+     * Action pour démarrer le jeu avec la série sélectionnée.
+     */
     private class JouerAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -139,6 +160,9 @@ public class MenuAvecSeriesBD extends JFrame {
         }
     }
 
+    /**
+     * Action pour quitter l'application.
+     */
     private class QuitterAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -146,6 +170,9 @@ public class MenuAvecSeriesBD extends JFrame {
         }
     }
 
+    /**
+     * Action pour afficher le tableau des scores de la série sélectionnée.
+     */
     private class AfficherScoresAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -159,6 +186,9 @@ public class MenuAvecSeriesBD extends JFrame {
         }
     }
 
+    /**
+     * Action pour afficher les instructions de jeu.
+     */
     private class CommentJouerAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -169,5 +199,4 @@ public class MenuAvecSeriesBD extends JFrame {
                 "Comment Jouer", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    
 }
