@@ -22,7 +22,6 @@ public class MenuAvecSeriesBD extends JFrame {
         setTitle("Menu");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
 
         BackgroundPanel backgroundPanel = new BackgroundPanel();
         backgroundPanel.setLayout(new BorderLayout());
@@ -40,30 +39,30 @@ public class MenuAvecSeriesBD extends JFrame {
         boutonJouer.setText("Jouer");
         boutonJouer.setRadius(15);
         boutonJouer.setPreferredSize(new Dimension(200, 50)); 
-        boutonJouer.setColor(new Color(76, 175, 80));
-        boutonJouer.setColorOver(new Color(102, 187, 106)); 
-        boutonJouer.setColorClick(new Color(67, 160, 71)); 
-        boutonJouer.setBorderColor(new Color(27, 94, 32)); 
+        boutonJouer.setColor(new Color(139, 69, 19)); 
+        boutonJouer.setColorOver(new Color(160, 82, 45)); 
+        boutonJouer.setColorClick(new Color(101, 67, 33)); 
+        boutonJouer.setBorderColor(new Color(92, 51, 23)); 
         boutonJouer.setForeground(Color.WHITE);
 
         boutonQuitter = new MyButton();
         boutonQuitter.setText("Quitter");
         boutonQuitter.setRadius(15);
         boutonQuitter.setPreferredSize(new Dimension(200, 50));
-        boutonQuitter.setColor(new Color(244, 67, 54));
-        boutonQuitter.setColorOver(new Color(229, 57, 53));
-        boutonQuitter.setColorClick(new Color(211, 47, 47));
-        boutonQuitter.setBorderColor(new Color(198, 40, 40));
+        boutonQuitter.setColor(new Color(139, 69, 19)); 
+        boutonQuitter.setColorOver(new Color(160, 82, 45)); 
+        boutonQuitter.setColorClick(new Color(101, 67, 33)); 
+        boutonQuitter.setBorderColor(new Color(92, 51, 23)); 
         boutonQuitter.setForeground(Color.WHITE);
 
         boutonScores = new MyButton();
         boutonScores.setText("Tableau des Scores");
         boutonScores.setRadius(15);
         boutonScores.setPreferredSize(new Dimension(200, 50));
-        boutonScores.setColor(new Color(33, 150, 243));
-        boutonScores.setColorOver(new Color(30, 136, 229));
-        boutonScores.setColorClick(new Color(25, 118, 210));
-        boutonScores.setBorderColor(new Color(21, 101, 192));
+        boutonScores.setColor(new Color(139, 69, 19));
+        boutonScores.setColorOver(new Color(160, 82, 45)); 
+        boutonScores.setColorClick(new Color(101, 67, 33)); 
+        boutonScores.setBorderColor(new Color(92, 51, 23)); 
         boutonScores.setForeground(Color.WHITE);
 
         comboBoxSeries = new JComboBox<>();
@@ -80,6 +79,10 @@ public class MenuAvecSeriesBD extends JFrame {
 
         JPanel rightPanel = new JPanel(new GridBagLayout());
         rightPanel.setOpaque(false); 
+        rightPanel.setOpaque(true); 
+        
+        rightPanel.setBackground(new Color(139, 69, 19, 140)); 
+
         rightPanel.setPreferredSize(new Dimension(240, 600));
 
         gbc = new GridBagConstraints();
@@ -154,10 +157,7 @@ public class MenuAvecSeriesBD extends JFrame {
 
         public BackgroundPanel() {
             try {
-                backgroundImage = new ImageIcon(getClass().getResource("/res/dorfromantik1.jpg")).getImage();
-                if (backgroundImage == null) {
-                    System.out.println("Image non chargée");
-                }
+                backgroundImage = new ImageIcon("../res/dor.png").getImage();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -172,7 +172,5 @@ public class MenuAvecSeriesBD extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(MenuAvecSeriesBD::new);
-    }
+    
 }

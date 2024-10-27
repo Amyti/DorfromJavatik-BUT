@@ -14,10 +14,10 @@ public class Jeu extends MouseAdapter implements KeyListener {
     private JScrollPane scrollPane;
     private Point lastMousePosition;
     private JlabelPerso score;
-    private int seriesId; // Ajout de seriesId
+    private int seriesId; 
 
     public Jeu(int seriesId) {
-        this.seriesId = seriesId; // Enregistrement de seriesId
+        this.seriesId = seriesId;
         frame = new JFrame("Deformantique");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1080, 720);
@@ -28,7 +28,7 @@ public class Jeu extends MouseAdapter implements KeyListener {
             frame.dispose();
             return;
         }
-        tileView = new TileView(tiles, seriesId); // Passe seriesId à TileView
+        tileView = new TileView(tiles, seriesId); 
 
         tileView.setPreferredSize(new Dimension(2500, 2500));
 

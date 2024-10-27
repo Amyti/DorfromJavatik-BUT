@@ -16,7 +16,7 @@ public class PreviewPanel extends JPanel {
     
     public void setProchaineTuile(Tile tuile) {
         this.prochaineTuile = tuile;
-        rotationAngle = 0;  // Remet la rotation à zéro quand une nouvelle tuile est chargée
+        rotationAngle = 0;
         repaint(); 
     }
     
