@@ -1,5 +1,4 @@
 package vue;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,104 +8,112 @@ import model.Serie;
 import model.SerieBD;
 import vue.ScoreTable;
 import vue.Jeu;
-import vue.MyButton; 
+import vue.MyButton;
+import vue.BackgroundPanel;
 
 public class MenuAvecSeriesBD extends JFrame {
 
     private JComboBox<Serie> comboBoxSeries;
-    private MyButton boutonJouer;   
+    private MyButton boutonJouer;
     private MyButton boutonQuitter;
     private MyButton boutonScores;
+    private MyButton boutonCommentJouer;
 
     public MenuAvecSeriesBD() {
         setTitle("Menu");
-        setSize(800, 600);
+        setSize(1080, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         BackgroundPanel backgroundPanel = new BackgroundPanel();
         backgroundPanel.setLayout(new BorderLayout());
         setContentPane(backgroundPanel);
 
+        JLabel logoLabel = new JLabel(new ImageIcon("../res/logo.png")); 
+        
         JPanel centerPanel = new JPanel(new GridBagLayout());
-        centerPanel.setOpaque(false); 
+        centerPanel.setOpaque(false);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(20, 0, 20, 0);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.CENTER;
 
-        boutonJouer = new MyButton();
-        boutonJouer.setText("Jouer");
-        boutonJouer.setRadius(15);
-        boutonJouer.setPreferredSize(new Dimension(200, 50)); 
-        boutonJouer.setColor(new Color(139, 69, 19)); 
-        boutonJouer.setColorOver(new Color(160, 82, 45)); 
-        boutonJouer.setColorClick(new Color(101, 67, 33)); 
-        boutonJouer.setBorderColor(new Color(92, 51, 23)); 
-        boutonJouer.setForeground(Color.WHITE);
-
-        boutonQuitter = new MyButton();
-        boutonQuitter.setText("Quitter");
-        boutonQuitter.setRadius(15);
-        boutonQuitter.setPreferredSize(new Dimension(200, 50));
-        boutonQuitter.setColor(new Color(139, 69, 19)); 
-        boutonQuitter.setColorOver(new Color(160, 82, 45)); 
-        boutonQuitter.setColorClick(new Color(101, 67, 33)); 
-        boutonQuitter.setBorderColor(new Color(92, 51, 23)); 
-        boutonQuitter.setForeground(Color.WHITE);
-
-        boutonScores = new MyButton();
-        boutonScores.setText("Tableau des Scores");
-        boutonScores.setRadius(15);
-        boutonScores.setPreferredSize(new Dimension(200, 50));
-        boutonScores.setColor(new Color(139, 69, 19));
-        boutonScores.setColorOver(new Color(160, 82, 45)); 
-        boutonScores.setColorClick(new Color(101, 67, 33)); 
-        boutonScores.setBorderColor(new Color(92, 51, 23)); 
-        boutonScores.setForeground(Color.WHITE);
+        JLabel labelChoisirSerie = new JLabel("Choisir une série :");
+        labelChoisirSerie.setOpaque(true);
+        labelChoisirSerie.setBackground(new Color(139, 69, 19));
+        labelChoisirSerie.setForeground(Color.WHITE);
+        labelChoisirSerie.setFont(new Font("Arial", Font.BOLD, 16));
+        labelChoisirSerie.setHorizontalAlignment(SwingConstants.CENTER);
+        labelChoisirSerie.setPreferredSize(new Dimension(200, 30));
+        labelChoisirSerie.setBorder(BorderFactory.createLineBorder(new Color(92, 51, 23), 2));
 
         comboBoxSeries = new JComboBox<>();
         chargerSeries();
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        centerPanel.add(new JLabel("Choisir une série :"), gbc);
+        centerPanel.add(labelChoisirSerie, gbc);
 
         gbc.gridy++;
         centerPanel.add(comboBoxSeries, gbc);
 
         backgroundPanel.add(centerPanel, BorderLayout.CENTER);
 
-        JPanel rightPanel = new JPanel(new GridBagLayout());
-        rightPanel.setOpaque(false); 
-        rightPanel.setOpaque(true); 
-        
-        rightPanel.setBackground(new Color(139, 69, 19, 140)); 
-
-        rightPanel.setPreferredSize(new Dimension(240, 600));
+        JPanel leftPanel = new JPanel(new GridBagLayout());
+        leftPanel.setBackground(new Color(139, 69, 19, 200));
+        leftPanel.setPreferredSize(new Dimension(240, 600));
 
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(20, 0, 20, 0);
         gbc.fill = GridBagConstraints.VERTICAL;
         gbc.anchor = GridBagConstraints.CENTER;
 
+        boutonJouer = setupButton("JOUER");
+        boutonQuitter = setupButton("QUITTER");
+        boutonScores = setupButton("TABLEAU DES SCORES");
+
         gbc.gridx = 0;
         gbc.gridy = 0;
-        rightPanel.add(boutonJouer, gbc);
+        leftPanel.add(boutonJouer, gbc);
 
         gbc.gridy++;
-        rightPanel.add(boutonScores, gbc);
+        leftPanel.add(boutonScores, gbc);
 
         gbc.gridy++;
-        rightPanel.add(boutonQuitter, gbc);
+        leftPanel.add(boutonQuitter, gbc);
 
-        backgroundPanel.add(rightPanel, BorderLayout.EAST);
+        backgroundPanel.add(leftPanel, BorderLayout.WEST);
 
         boutonJouer.addActionListener(new JouerAction());
         boutonQuitter.addActionListener(new QuitterAction());
         boutonScores.addActionListener(new AfficherScoresAction());
 
+        JPanel rightPanel = new JPanel(new BorderLayout());
+        rightPanel.setOpaque(false); 
+        rightPanel.setPreferredSize(new Dimension(240, 600));
+
+        boutonCommentJouer = setupButton("COMMENT JOUER");
+        boutonCommentJouer.setPreferredSize(new Dimension(200, 50));
+        rightPanel.add(boutonCommentJouer, BorderLayout.SOUTH);
+
+        backgroundPanel.add(rightPanel, BorderLayout.EAST);
+
+        boutonCommentJouer.addActionListener(new CommentJouerAction());
+
         setVisible(true);
+    }
+
+    private MyButton setupButton(String text) {
+        MyButton button = new MyButton();
+        button.setText(text);
+        button.setRadius(15);
+        button.setPreferredSize(new Dimension(200, 50)); 
+        button.setColor(new Color(139, 69, 19)); 
+        button.setColorOver(new Color(160, 82, 45)); 
+        button.setColorClick(new Color(101, 67, 33)); 
+        button.setBorderColor(new Color(92, 51, 23)); 
+        button.setForeground(Color.WHITE);
+        return button;
     }
 
     private void chargerSeries() {
@@ -127,7 +134,7 @@ public class MenuAvecSeriesBD extends JFrame {
                 new Jeu(seriesId);
                 dispose();
             } else {
-                JOptionPane.showMessageDialog(MenuAvecSeriesBD.this, "Veuillez sélectionner une série.");
+                JOptionPane.showMessageDialog(MenuAvecSeriesBD.this, "Veuillez sélectionner une série.", "Information", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
@@ -147,30 +154,20 @@ public class MenuAvecSeriesBD extends JFrame {
                 int seriesId = selectedSerie.getId();
                 new ScoreTable(seriesId);
             } else {
-                JOptionPane.showMessageDialog(MenuAvecSeriesBD.this, "Veuillez sélectionner une série.");
+                JOptionPane.showMessageDialog(MenuAvecSeriesBD.this, "Veuillez sélectionner une série.", "Information", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
 
-    class BackgroundPanel extends JPanel {
-        private Image backgroundImage;
-
-        public BackgroundPanel() {
-            try {
-                backgroundImage = new ImageIcon("../res/dor.png").getImage();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
+    private class CommentJouerAction implements ActionListener {
         @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            if (backgroundImage != null) {
-                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-            }
+        public void actionPerformed(ActionEvent e) {
+            JOptionPane.showMessageDialog(MenuAvecSeriesBD.this,
+                "1. Pour lancer le jeu, sélectionnez d'abord une série, puis cliquez sur le bouton JOUER dans le menu à gauche.\n" +
+                "2. Pour faire pivoter les tuiles, utilisez les flèches directionnelles directement sur votre clavier.\n" +
+                "3. Vous pouvez maintenant commencer à jouer !",
+                "Comment Jouer", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-
     
 }

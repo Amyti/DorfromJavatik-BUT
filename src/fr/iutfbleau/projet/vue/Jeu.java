@@ -34,7 +34,7 @@ public class Jeu extends MouseAdapter implements KeyListener {
 
         Tile prochaineTuile = tileView.getProchaineTuile();
         previewPanel = new PreviewPanel(prochaineTuile);
-        previewPanel.setBackground(Color.WHITE);
+        previewPanel.setBackground(new Color(139, 69, 19));
 
         scrollPane = new JScrollPane(tileView);
         scrollPane.setPreferredSize(new Dimension(1080, 720));
@@ -58,7 +58,7 @@ public class Jeu extends MouseAdapter implements KeyListener {
         gbc.fill = GridBagConstraints.BOTH;
         mainScreen.add(scrollPane, gbc);
 
-        sideBar.setBackground(Color.WHITE);
+        sideBar.setBackground(new Color(139, 69, 19));
         sideBar.setPreferredSize(new Dimension(270, 720));
         sideBar.setMinimumSize(new Dimension(270, 720));
         sideBar.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
@@ -68,7 +68,6 @@ public class Jeu extends MouseAdapter implements KeyListener {
         gbc.weightx = 1;
         gbc.weighty = 0.1;
         gbc.anchor = GridBagConstraints.NORTH;
-        gbc.insets = new Insets(10, 10, 10, 10);
         sideBar.add(score, gbc);
 
         gbc.gridy = 1;

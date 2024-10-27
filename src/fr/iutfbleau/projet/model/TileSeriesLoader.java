@@ -4,11 +4,23 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * La classe TileSeriesLoader est responsable de charger une série de tuiles depuis
+ * une base de données en fonction de l'identifiant d'une série spécifique.
+ */
 public class TileSeriesLoader {
+
     private static final String DB_URL = "jdbc:mariadb://dwarves.iut-fbleau.fr/kabbouri";
     private static final String DB_USER = "kabbouri";
     private static final String DB_PASS = "061005";
 
+    /**
+     * Charge une série de tuiles depuis la base de données en fonction de l'ID de la série.
+     * Pour chaque tuile, crée un objet {@link Tile} avec les types de terrains et le ratio de séparation.
+     *
+     * @param seriesId L'ID de la série dont les tuiles doivent être chargées.
+     * @return Une liste de {@link Tile} représentant les tuiles de la série.
+     */
     public static List<Tile> loadSeries(int seriesId) {
         List<Tile> tiles = new ArrayList<>();
         
