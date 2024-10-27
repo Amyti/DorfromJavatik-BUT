@@ -1,8 +1,8 @@
-package vue;
+package fr.iutfbleau.projet.vue;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import model.ScoreManager;
+import fr.iutfbleau.projet.model.ScoreManager;
 import java.awt.*;
 import java.util.List;
 

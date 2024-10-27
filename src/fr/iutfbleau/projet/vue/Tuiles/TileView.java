@@ -1,7 +1,7 @@
-package vue;
+package fr.iutfbleau.projet.vue;
 
-import model.Tile;
-import controller.TileController;
+import fr.iutfbleau.projet.model.Tile;
+import fr.iutfbleau.projet.controller.TileController;
 import javax.swing.JPanel;
 import java.awt.Point;
 import java.awt.Graphics;
@@ -11,7 +11,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.RenderingHints;
-import vue.MenuAvecSeriesBD;
+import fr.iutfbleau.projet.vue.MenuAvecSeriesBD;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -19,11 +19,11 @@ import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import model.ScoreManager;
+import fr.iutfbleau.projet.model.ScoreManager;
 import javax.swing.SwingUtilities; 
 import java.util.Map;
 import javax.swing.JOptionPane;
-import vue.MenuAvecSeriesBD;
+import fr.iutfbleau.projet.vue.MenuAvecSeriesBD;
 import java.util.Objects; 
 
 /**

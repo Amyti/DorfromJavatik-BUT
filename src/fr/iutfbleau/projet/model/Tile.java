@@ -1,4 +1,4 @@
-package model;
+package fr.iutfbleau.projet.model;
 
 import java.util.Random;
 

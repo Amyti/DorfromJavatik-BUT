@@ -1,4 +1,4 @@
-package vue;
+package fr.iutfbleau.projet.vue;
 
 import java.awt.Color;
 import java.awt.Graphics;

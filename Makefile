@@ -12,11 +12,11 @@ MAIN_CLASS = fr.iutfbleau.projet.Main
 ### RÈGLES ESSENTIELLES ###
 
 # Cible par défaut
-all: $(BUILD_DIR)/$(MAIN_CLASS).class
+all: $(BUILD_DIR)/$(subst .,/,$(MAIN_CLASS)).class
 
 # Compilation du fichier principal
-$(BUILD_DIR)/$(MAIN_CLASS).class: $(SRC_DIR)/fr/iutfbleau/projet/Main.java $(BUILD_DIR)/fr/iutfbleau/projet/vue/MenuAvecSeriesBD.class
-	$(JC) $(JCFLAGS) $(SRC_DIR)/fr/iutfbleau/projet/Main.java
+$(BUILD_DIR)/fr/iutfbleau/projet/Main.class: $(SRC_DIR)/fr/iutfbleau/projet/Main.java $(BUILD_DIR)/fr/iutfbleau/projet/vue/MenuAvecSeriesBD.class
+	$(JC) $(JCFLAGS) $<
 
 # Compilation des classes du modèle
 $(BUILD_DIR)/fr/iutfbleau/projet/model/Tile.class: $(SRC_DIR)/fr/iutfbleau/projet/model/Tile.java
@@ -47,14 +47,18 @@ $(BUILD_DIR)/fr/iutfbleau/projet/vue/Tuiles/HexagonUtils.class: $(SRC_DIR)/fr/iu
 $(BUILD_DIR)/fr/iutfbleau/projet/vue/Tuiles/DessinerGrilleHexagonal.class: $(SRC_DIR)/fr/iutfbleau/projet/vue/Tuiles/DessinerGrilleHexagonal.java $(BUILD_DIR)/fr/iutfbleau/projet/model/Tile.class
 	$(JC) $(JCFLAGS) $<
 
-# Compilation des contrôleurs et classes principales de vue
-$(BUILD_DIR)/fr/iutfbleau/projet/vue/TileView.class: $(SRC_DIR)/fr/iutfbleau/projet/vue/Tuiles/TileView.java $(BUILD_DIR)/fr/iutfbleau/projet/model/Tile.class $(BUILD_DIR)/fr/iutfbleau/projet/vue/Tuiles/HexagonUtils.class $(BUILD_DIR)/fr/iutfbleau/projet/vue/Tuiles/DessinerGrilleHexagonal.class
-	$(JC) $(JCFLAGS) $<
+# Compilation simultanée de TileController et TileView pour résoudre la dépendance circulaire
+$(BUILD_DIR)/fr/iutfbleau/projet/controller/TileController.class $(BUILD_DIR)/fr/iutfbleau/projet/vue/Tuiles/TileView.class: \
+    $(SRC_DIR)/fr/iutfbleau/projet/controller/TileController.java \
+    $(SRC_DIR)/fr/iutfbleau/projet/vue/Tuiles/TileView.java \
+    $(BUILD_DIR)/fr/iutfbleau/projet/model/Tile.class \
+    $(BUILD_DIR)/fr/iutfbleau/projet/vue/Tuiles/HexagonUtils.class \
+    $(BUILD_DIR)/fr/iutfbleau/projet/vue/Tuiles/DessinerGrilleHexagonal.class
+	$(JC) $(JCFLAGS) $(SRC_DIR)/fr/iutfbleau/projet/controller/TileController.java \
+    $(SRC_DIR)/fr/iutfbleau/projet/vue/Tuiles/TileView.java
 
-$(BUILD_DIR)/fr/iutfbleau/projet/controller/TileController.class: $(SRC_DIR)/fr/iutfbleau/projet/controller/TileController.java $(BUILD_DIR)/fr/iutfbleau/projet/vue/TileView.class
-	$(JC) $(JCFLAGS) $<
-
-$(BUILD_DIR)/fr/iutfbleau/projet/vue/Jeu.class: $(SRC_DIR)/fr/iutfbleau/projet/vue/Jeu.java $(BUILD_DIR)/fr/iutfbleau/projet/vue/TileView.class $(BUILD_DIR)/fr/iutfbleau/projet/model/Tile.class
+# Compilation des autres classes dépendantes
+$(BUILD_DIR)/fr/iutfbleau/projet/vue/Jeu.class: $(SRC_DIR)/fr/iutfbleau/projet/vue/Jeu.java $(BUILD_DIR)/fr/iutfbleau/projet/vue/Tuiles/TileView.class $(BUILD_DIR)/fr/iutfbleau/projet/model/Tile.class $(BUILD_DIR)/fr/iutfbleau/projet/controller/TileController.class
 	$(JC) $(JCFLAGS) $<
 
 $(BUILD_DIR)/fr/iutfbleau/projet/vue/MenuAvecSeriesBD.class: $(SRC_DIR)/fr/iutfbleau/projet/vue/MenuAvecSeriesBD.java $(BUILD_DIR)/fr/iutfbleau/projet/vue/ScoreTable.class $(BUILD_DIR)/fr/iutfbleau/projet/vue/MyButton.class $(BUILD_DIR)/fr/iutfbleau/projet/vue/BackgroundPanel.class $(BUILD_DIR)/fr/iutfbleau/projet/model/Serie.class $(BUILD_DIR)/fr/iutfbleau/projet/model/SerieBD.class $(BUILD_DIR)/fr/iutfbleau/projet/vue/Jeu.class
@@ -68,7 +72,7 @@ run: all
 
 # Nettoyage des fichiers compilés
 clean:
-	-rm -rf $(BUILD_DIR)/**/*.class
+	-rm -rf $(BUILD_DIR)/fr/**/*.class
 
 ### BUTS FACTICES ###
 .PHONY: all run clean

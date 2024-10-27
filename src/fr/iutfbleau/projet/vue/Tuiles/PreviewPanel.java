@@ -1,9 +1,9 @@
-package vue;
+package fr.iutfbleau.projet.vue;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import model.Tile;
+import fr.iutfbleau.projet.model.Tile;
 
 /**
  * La classe PreviewPanel représente un panneau de prévisualisation d'une tuile,

@@ -1,9 +1,9 @@
-package vue;
+package fr.iutfbleau.projet.vue;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import model.*;
+import fr.iutfbleau.projet.model.*;
 import java.util.List;
 
 /**

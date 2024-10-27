@@ -1,6 +1,6 @@
-package vue;
+package fr.iutfbleau.projet.vue;
 
-import model.Tile;
+import fr.iutfbleau.projet.model.Tile;
 import java.awt.*;
 import java.awt.geom.Path2D;
 

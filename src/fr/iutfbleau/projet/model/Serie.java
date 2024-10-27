@@ -1,4 +1,4 @@
-package model;
+package fr.iutfbleau.projet.model;
 
 /**
  * La classe Serie représente une série avec un identifiant et un nom.

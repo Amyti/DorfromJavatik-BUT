@@ -1,4 +1,4 @@
-package vue;
+package fr.iutfbleau.projet.vue;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,16 +1,16 @@
-package vue;
+package fr.iutfbleau.projet.vue;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import model.Serie;
-import model.SerieBD;
-import vue.ScoreTable;
-import vue.Jeu;
-import vue.MyButton;
-import vue.BackgroundPanel;
+import fr.iutfbleau.projet.model.Serie;
+import fr.iutfbleau.projet.model.SerieBD;
+import fr.iutfbleau.projet.vue.ScoreTable;
+import fr.iutfbleau.projet.vue.Jeu;
+import fr.iutfbleau.projet.vue.MyButton;
+import fr.iutfbleau.projet.vue.BackgroundPanel;
 
 /**
  * La classe MenuAvecSeriesBD représente le menu principal du jeu, permettant de sélectionner une série,

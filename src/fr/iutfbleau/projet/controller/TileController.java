@@ -1,8 +1,8 @@
-package controller;
+package fr.iutfbleau.projet.controller;
 
-import model.*;
-import model.Tile.TerrainType;
-import vue.*;
+import fr.iutfbleau.projet.model.*;
+import fr.iutfbleau.projet.model.Tile.TerrainType;
+import fr.iutfbleau.projet.vue.*;
 
 import java.awt.*;
 import java.util.List;
