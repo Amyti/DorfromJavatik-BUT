@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"fr.iutfbleau.projet.controller"},{"l":"fr.iutfbleau.projet.model"},{"l":"fr.iutfbleau.projet.vue"},{"l":"fr.iutfbleau.projet.vue.actions"},{"l":"fr.iutfbleau.projet.vue.Tuiles"}];updateSearchResults();

@@ -16,6 +16,18 @@ public class DessinerGrilleHexagonal {
     private Shape largeHexagon;
     private Tile tile;
 
+    // Définition des couleurs en tant que constantes statiques finales
+    private static final Color COLOR_MER = new Color(66, 112, 182);
+    private static final Color COLOR_CHAMP = new Color(144, 197, 129);
+    private static final Color COLOR_PRE = new Color(231, 224, 83);
+    private static final Color COLOR_FORET = new Color(64, 118, 75);
+    private static final Color COLOR_MONTAGNE = new Color(100, 100, 100);
+    private static final Color COLOR_DEFAULT = Color.WHITE;
+    private static final Color COLOR_BORDER = Color.BLACK;
+
+    // Définition du trait de contour en tant que constante statique finale
+    private static final BasicStroke HEXAGON_STROKE = new BasicStroke(5);
+
     /**
      * Constructeur de la classe DessinerGrilleHexagonal.
      *
@@ -48,8 +60,8 @@ public class DessinerGrilleHexagonal {
             drawFullHexagon(getTerrainColor(tile.getTerrain1()));
         }
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setColor(Color.BLACK);
-        g2d.setStroke(new BasicStroke(5));
+        g2d.setColor(COLOR_BORDER);
+        g2d.setStroke(HEXAGON_STROKE);
         g2d.draw(largeHexagon);
     }
 
@@ -66,23 +78,9 @@ public class DessinerGrilleHexagonal {
         int numSegments = (int) Math.round(6 * ratio);
 
         for (int i = 0; i < 6; i++) {
-            double angle1 = i * Math.PI / 3; 
-            double angle2 = (i + 1) * Math.PI / 3; 
-
-            int x1 = centerX + (int) (Math.cos(angle1) * smallRadius);
-            int y1 = centerY + (int) (Math.sin(angle1) * smallRadius);
-            int x2 = centerX + (int) (Math.cos(angle2) * smallRadius);
-            int y2 = centerY + (int) (Math.sin(angle2) * smallRadius);
-
-            Path2D segment = new Path2D.Double();
-            segment.moveTo(centerX, centerY);
-            segment.lineTo(x1, y1);
-            segment.lineTo(x2, y2);
-            segment.closePath();
-
-            g2d.setColor(i < numSegments ? terrain1Color : terrain2Color);
-            g2d.fill(segment);
-            g2d.draw(segment);
+            Color segmentColor = i < numSegments ? terrain1Color : terrain2Color;
+            HexagonSegmentDrawer segmentDrawer = new HexagonSegmentDrawer(g2d, centerX, centerY, smallRadius, segmentColor, i);
+            segmentDrawer.drawSegment();
         }
     }
 
@@ -105,17 +103,17 @@ public class DessinerGrilleHexagonal {
     private Color getTerrainColor(Tile.TerrainType terrain) {
         switch (terrain) {
             case MER:
-                return new Color(66, 112, 182);
+                return COLOR_MER;
             case CHAMP:
-                return new Color(144, 197, 129);
+                return COLOR_CHAMP;
             case PRE:
-                return new Color(231, 224, 83);
+                return COLOR_PRE;
             case FORET:
-                return new Color(64, 118, 75);
+                return COLOR_FORET;
             case MONTAGNE:
-                return new Color(100, 100, 100);
+                return COLOR_MONTAGNE;
             default:
-                return Color.WHITE;
+                return COLOR_DEFAULT;
         }
     }
 }

@@ -2,15 +2,15 @@ package fr.iutfbleau.projet.vue;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 import fr.iutfbleau.projet.model.Serie;
 import fr.iutfbleau.projet.model.SerieBD;
-import fr.iutfbleau.projet.vue.ScoreTable;
-import fr.iutfbleau.projet.vue.Jeu;
 import fr.iutfbleau.projet.vue.MyButton;
 import fr.iutfbleau.projet.vue.BackgroundPanel;
+import fr.iutfbleau.projet.vue.actions.JouerAction;
+import fr.iutfbleau.projet.vue.actions.QuitterAction;
+import fr.iutfbleau.projet.vue.actions.AfficherScoresAction;
+import fr.iutfbleau.projet.vue.actions.CommentJouerAction;
 
 /**
  * La classe MenuAvecSeriesBD représente le menu principal du jeu, permettant de sélectionner une série,
@@ -93,12 +93,13 @@ public class MenuAvecSeriesBD extends JFrame {
 
         backgroundPanel.add(leftPanel, BorderLayout.WEST);
 
-        boutonJouer.addActionListener(new JouerAction());
+        // Ajout des action listeners avec les classes externes
+        boutonJouer.addActionListener(new JouerAction(this));
         boutonQuitter.addActionListener(new QuitterAction());
-        boutonScores.addActionListener(new AfficherScoresAction());
+        boutonScores.addActionListener(new AfficherScoresAction(this));
 
         JPanel rightPanel = new JPanel(new BorderLayout());
-        rightPanel.setOpaque(false); 
+        rightPanel.setOpaque(false);
         rightPanel.setPreferredSize(new Dimension(240, 600));
 
         boutonCommentJouer = setupButton("COMMENT JOUER");
@@ -107,7 +108,7 @@ public class MenuAvecSeriesBD extends JFrame {
 
         backgroundPanel.add(rightPanel, BorderLayout.EAST);
 
-        boutonCommentJouer.addActionListener(new CommentJouerAction());
+        boutonCommentJouer.addActionListener(new CommentJouerAction(this));
 
         setVisible(true);
     }
@@ -144,59 +145,11 @@ public class MenuAvecSeriesBD extends JFrame {
     }
 
     /**
-     * Action pour démarrer le jeu avec la série sélectionnée.
+     * Getter pour le JComboBox des séries.
+     *
+     * @return Le JComboBox contenant les séries.
      */
-    private class JouerAction implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            Serie selectedSerie = (Serie) comboBoxSeries.getSelectedItem();
-            if (selectedSerie != null) {
-                int seriesId = selectedSerie.getId();
-                new Jeu(seriesId);
-                dispose();
-            } else {
-                JOptionPane.showMessageDialog(MenuAvecSeriesBD.this, "Veuillez sélectionner une série.", "Information", JOptionPane.INFORMATION_MESSAGE);
-            }
-        }
-    }
-
-    /**
-     * Action pour quitter l'application.
-     */
-    private class QuitterAction implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            System.exit(0);
-        }
-    }
-
-    /**
-     * Action pour afficher le tableau des scores de la série sélectionnée.
-     */
-    private class AfficherScoresAction implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            Serie selectedSerie = (Serie) comboBoxSeries.getSelectedItem();
-            if (selectedSerie != null) {
-                int seriesId = selectedSerie.getId();
-                new ScoreTable(seriesId);
-            } else {
-                JOptionPane.showMessageDialog(MenuAvecSeriesBD.this, "Veuillez sélectionner une série.", "Information", JOptionPane.INFORMATION_MESSAGE);
-            }
-        }
-    }
-
-    /**
-     * Action pour afficher les instructions de jeu.
-     */
-    private class CommentJouerAction implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            JOptionPane.showMessageDialog(MenuAvecSeriesBD.this,
-                "1. Pour lancer le jeu, sélectionnez d'abord une série, puis cliquez sur le bouton JOUER dans le menu à gauche.\n" +
-                "2. Pour faire pivoter les tuiles, utilisez les flèches directionnelles directement sur votre clavier.\n" +
-                "3. Vous pouvez maintenant commencer à jouer !",
-                "Comment Jouer", JOptionPane.INFORMATION_MESSAGE);
-        }
+    public JComboBox<Serie> getComboBoxSeries() {
+        return comboBoxSeries;
     }
 }

@@ -8,11 +8,12 @@ JVMFLAGS = -cp "../build:../res/mariadb.jar"
 BUILD_DIR = build
 SRC_DIR = src
 MAIN_CLASS = fr.iutfbleau.projet.Main
+JAR_NAME = projet.jar
 
 ### RÈGLES ESSENTIELLES ###
 
 # Cible par défaut
-all: compile
+all: compile jar
 
 # Compilation de tous les fichiers en une seule commande
 compile:
@@ -21,6 +22,7 @@ compile:
 	$(JC) $(JCFLAGS) \
 	../$(SRC_DIR)/fr/iutfbleau/projet/model/* \
 	../$(SRC_DIR)/fr/iutfbleau/projet/vue/Tuiles/* \
+	../$(SRC_DIR)/fr/iutfbleau/projet/vue/actions/* \
 	../$(SRC_DIR)/fr/iutfbleau/projet/controller/* \
 	../$(SRC_DIR)/fr/iutfbleau/projet/vue/MenuAvecSeriesBD.java \
 	../$(SRC_DIR)/fr/iutfbleau/projet/vue/Jeu.java \
@@ -29,6 +31,11 @@ compile:
 	../$(SRC_DIR)/fr/iutfbleau/projet/vue/JlabelPerso.java \
 	../$(SRC_DIR)/fr/iutfbleau/projet/vue/MyButton.java \
 	../$(SRC_DIR)/fr/iutfbleau/projet/vue/BackgroundPanel.java
+
+# Création de l'archive jar
+jar:
+	@cd $(BUILD_DIR) && \
+	jar cfe $(JAR_NAME) $(MAIN_CLASS) fr/iutfbleau/projet/**/*.class
 
 ### RÈGLES D'EXÉCUTION ET DE NETTOYAGE ###
 
@@ -42,4 +49,4 @@ clean:
 	@rm -rf $(BUILD_DIR)
 
 ### BUTS FACTICES ###
-.PHONY: all compile run clean
+.PHONY: all compile jar run clean

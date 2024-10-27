@@ -6,7 +6,6 @@ import java.util.Random;
  * La classe Tile représente une tuile avec des types de terrains et des propriétés telles que
  * l'angle de rotation, le ratio de séparation et la disposition des terrains.
  */
-
 public class Tile {
 
     /**
@@ -23,6 +22,9 @@ public class Tile {
     private double splitRatio;
     private double rotationAngle;
 
+    // Instance statique de Random pour éviter les instanciations répétées
+    private static final Random RANDOM = new Random();
+
     /**
      * Constructeur pour créer une tuile avec un seul type de terrain.
      *
@@ -31,8 +33,8 @@ public class Tile {
     public Tile(TerrainType terrain1) {
         this.terrain1 = terrain1;
         this.hasTwoTerrains = false;
-        this.splitRatio = 1.0; 
-        this.isTerrain1OnTopOrLeft = true; 
+        this.splitRatio = 1.0;
+        this.isTerrain1OnTopOrLeft = true;
         this.rotationAngle = 0;
     }
 
@@ -48,8 +50,8 @@ public class Tile {
         this.terrain2 = terrain2;
         this.hasTwoTerrains = true;
         this.splitRatio = splitRatio;
-        this.isTerrain1OnTopOrLeft = new Random().nextBoolean(); 
-        this.rotationAngle = new Random().nextInt(6) * 60;
+        this.isTerrain1OnTopOrLeft = RANDOM.nextBoolean();
+        this.rotationAngle = RANDOM.nextInt(6) * 60;
     }
 
     /**
