@@ -11,6 +11,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.RenderingHints;
+import vue.MenuAvecSeriesBD;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -18,7 +19,11 @@ import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import model.ScoreManager;
+import javax.swing.SwingUtilities; 
 import java.util.Map;
+import javax.swing.JOptionPane;
+
 import java.util.Objects; 
 
 public class TileView extends JPanel implements MouseListener, MouseMotionListener {
@@ -29,8 +34,11 @@ public class TileView extends JPanel implements MouseListener, MouseMotionListen
     private Point hoveredHexagon = null;
     private Map<Point, Tile> tuilesPlacees = new HashMap<>();
     private List<Tile> listeTuilesGenerees;
+    private int seriesId;
+
     
-    public TileView(List<Tile> tiles) {
+    public TileView(List<Tile> tiles, int seriesId) {
+        this.seriesId = seriesId;
         this.listeTuilesGenerees = new ArrayList<>(tiles); 
         this.positions = new ArrayList<>();
         setPreferredSize(new Dimension(2500, 2500));
@@ -111,6 +119,35 @@ public class TileView extends JPanel implements MouseListener, MouseMotionListen
             }
         }
     }
+
+    public int getScore() {
+        return tileController.calculerScore();
+    }
+
+    public void finDeJeu(int scoreFinal) {
+        ScoreManager.saveScore(scoreFinal, seriesId);
+
+        int response = JOptionPane.showOptionDialog(
+            this,
+            "Félicitations ! Vous avez terminé le jeu.\nScore final : " + scoreFinal,
+            "Fin de Jeu",
+            JOptionPane.DEFAULT_OPTION,
+            JOptionPane.INFORMATION_MESSAGE,
+            null,
+            new Object[]{"Recommencer", "Quitter"},
+            "Recommencer"
+        );
+
+        if (response == 0) {
+            SwingUtilities.getWindowAncestor(this).dispose(); 
+            new MenuAvecSeriesBD(); 
+        } else {
+            System.exit(0); 
+        }
+    }
+
+
+    
 
     @Override
     protected void paintComponent(Graphics g) {

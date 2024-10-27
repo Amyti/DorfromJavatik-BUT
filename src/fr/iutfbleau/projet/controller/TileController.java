@@ -17,21 +17,34 @@ import java.util.HashSet;
 public class TileController {
     private TileView tileView;
     public int score = 0;
+    private int tilesPlacedCount = 0; 
+    private final int MAX_TILES = 50;
+
     
     public TileController(TileView tileView) {
         this.tileView = tileView;
     }
     
     public void PlacerTuile(int x, int y, Tile tuileAPlacer) {
+        if (tilesPlacedCount >= MAX_TILES) {
+            signalerFinDeJeu();
+        }
+
         Point point = new Point(x, y);
         tileView.ajouterTuile(point, tuileAPlacer);
         tileView.ajouterPosition(point);
         ajoutPoints(point, tuileAPlacer); 
-        
+        tilesPlacedCount++;
         tileView.mettreAJourPositionsDisponibles();
         tileView.repaint();
         
-        System.out.println("Centre de la tuile placée : (" + point.x + ", " + point.y + ")");
+        
+    }
+
+
+    public void signalerFinDeJeu() {
+        int ScoreFinal = calculerScore();
+        tileView.finDeJeu(ScoreFinal); 
     }
     
     private void ajoutPoints(Point positionNouvelleTuile, Tile nouvelleTuile) {
@@ -42,7 +55,6 @@ public class TileController {
             if (tuileAdjacente != null) {
                 if (comparerCotes(nouvelleTuile, tuileAdjacente, positionNouvelleTuile, posAdj)) {
                     score++;
-                    System.out.println("Score actuel : " + score);
                 }
             }
         }
@@ -181,6 +193,8 @@ public class TileController {
     }
     
     public int getScore() {
+        System.out.println("Instance TileController dans getScore : " + this);
+        System.out.println("Score actuel dans getScore() : " + score);
         return score;
     }
 

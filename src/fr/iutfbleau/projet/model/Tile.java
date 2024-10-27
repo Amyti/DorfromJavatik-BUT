@@ -17,7 +17,7 @@ public class Tile {
     public Tile(TerrainType terrain1) {
         this.terrain1 = terrain1;
         this.hasTwoTerrains = false;
-        this.splitRatio = 1.0; // 100% terrain1 pour les tuiles à terrain unique
+        this.splitRatio = 1.0; 
         this.isTerrain1OnTopOrLeft = true; 
         this.rotationAngle = 0;
     }
@@ -26,7 +26,7 @@ public class Tile {
         this.terrain1 = terrain1;
         this.terrain2 = terrain2;
         this.hasTwoTerrains = true;
-        this.splitRatio = splitRatio; // Le ratio est directement défini
+        this.splitRatio = splitRatio;
         this.isTerrain1OnTopOrLeft = new Random().nextBoolean(); 
         this.rotationAngle = new Random().nextInt(6) * 60;
     }

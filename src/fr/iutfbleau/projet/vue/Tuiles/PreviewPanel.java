@@ -16,6 +16,7 @@ public class PreviewPanel extends JPanel {
     
     public void setProchaineTuile(Tile tuile) {
         this.prochaineTuile = tuile;
+        rotationAngle = 0;  // Remet la rotation à zéro quand une nouvelle tuile est chargée
         repaint(); 
     }
     
@@ -55,7 +56,6 @@ public class PreviewPanel extends JPanel {
         g2d.setColor(Color.BLACK);
         g2d.draw(hexagon);
         
-
         DessinerGrilleHexagonal grille = new DessinerGrilleHexagonal(g2d, centerX, centerY, hexagonRadius, hexagon, prochaineTuile);
         grille.GrilleHexagonal();
         

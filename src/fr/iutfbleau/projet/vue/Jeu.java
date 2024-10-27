@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import model.*;
-import controller.TileController;
 import java.util.List;
 
 public class Jeu extends MouseAdapter implements KeyListener {
@@ -15,9 +14,10 @@ public class Jeu extends MouseAdapter implements KeyListener {
     private JScrollPane scrollPane;
     private Point lastMousePosition;
     private JlabelPerso score;
-    private TileController tileController;
+    private int seriesId; // Ajout de seriesId
 
     public Jeu(int seriesId) {
+        this.seriesId = seriesId; // Enregistrement de seriesId
         frame = new JFrame("Deformantique");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1080, 720);
@@ -28,9 +28,7 @@ public class Jeu extends MouseAdapter implements KeyListener {
             frame.dispose();
             return;
         }
-
-        tileView = new TileView(tiles);
-        tileController = new TileController(tileView);
+        tileView = new TileView(tiles, seriesId); // Passe seriesId à TileView
 
         tileView.setPreferredSize(new Dimension(2500, 2500));
 
@@ -50,8 +48,8 @@ public class Jeu extends MouseAdapter implements KeyListener {
         GridBagConstraints gbc = new GridBagConstraints();
         JPanel mainScreen = new JPanel(new GridBagLayout());
         JPanel sideBar = new JPanel(new GridBagLayout());
-        score = new JlabelPerso("Score : 0", 25); // Initialise le score
-        JlabelPerso previsualisationLabel = new JlabelPerso("Prochaine tuile : ", 25);
+        score = new JlabelPerso("Score : 0", 25); 
+        JlabelPerso previsualisationLabel = new JlabelPerso("Prochaine tuile : ", 20);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -138,25 +136,24 @@ public class Jeu extends MouseAdapter implements KeyListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        tileView.mouseClicked(e);
-        previewPanel.setProchaineTuile(tileView.getProchaineTuile());
-        int scoreFinal = tileController.getScore(); // Récupère le score actuel
-        score.setText("Score : " + scoreFinal); // Met à jour l'affichage du score
+        tileView.mouseClicked(e); 
+        previewPanel.setProchaineTuile(tileView.getProchaineTuile()); 
+        int currentScore = tileView.getScore();
+        score.setText("Score : " + currentScore);
         score.repaint();
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            previewPanel.rotateTile(-60);
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             previewPanel.rotateTile(60);
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            previewPanel.rotateTile(-60);
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {}
-
     @Override
     public void keyTyped(KeyEvent e) {}
 }

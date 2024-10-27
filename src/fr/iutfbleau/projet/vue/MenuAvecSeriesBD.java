@@ -4,72 +4,145 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import model.Serie;
 import model.SerieBD;
-import java.util.List;
+import vue.ScoreTable;
+import vue.Jeu;
+import vue.MyButton; 
 
 public class MenuAvecSeriesBD extends JFrame {
 
     private JComboBox<Serie> comboBoxSeries;
+    private MyButton boutonJouer;   
+    private MyButton boutonQuitter;
+    private MyButton boutonScores;
 
     public MenuAvecSeriesBD() {
-        setTitle("Menu avec Fond et Séries");
+        setTitle("Menu");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new BorderLayout());
 
         BackgroundPanel backgroundPanel = new BackgroundPanel();
-        backgroundPanel.setLayout(new GridBagLayout());
+        backgroundPanel.setLayout(new BorderLayout());
+        setContentPane(backgroundPanel);
+
+        JPanel centerPanel = new JPanel(new GridBagLayout());
+        centerPanel.setOpaque(false); 
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(20, 0, 20, 0);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.CENTER;
 
-        JButton boutonJouer = new JButton("Jouer");
-        JButton boutonQuitter = new JButton("Quitter");
+        boutonJouer = new MyButton();
+        boutonJouer.setText("Jouer");
+        boutonJouer.setRadius(15);
+        boutonJouer.setPreferredSize(new Dimension(200, 50)); 
+        boutonJouer.setColor(new Color(76, 175, 80));
+        boutonJouer.setColorOver(new Color(102, 187, 106)); 
+        boutonJouer.setColorClick(new Color(67, 160, 71)); 
+        boutonJouer.setBorderColor(new Color(27, 94, 32)); 
+        boutonJouer.setForeground(Color.WHITE);
+
+        boutonQuitter = new MyButton();
+        boutonQuitter.setText("Quitter");
+        boutonQuitter.setRadius(15);
+        boutonQuitter.setPreferredSize(new Dimension(200, 50));
+        boutonQuitter.setColor(new Color(244, 67, 54));
+        boutonQuitter.setColorOver(new Color(229, 57, 53));
+        boutonQuitter.setColorClick(new Color(211, 47, 47));
+        boutonQuitter.setBorderColor(new Color(198, 40, 40));
+        boutonQuitter.setForeground(Color.WHITE);
+
+        boutonScores = new MyButton();
+        boutonScores.setText("Tableau des Scores");
+        boutonScores.setRadius(15);
+        boutonScores.setPreferredSize(new Dimension(200, 50));
+        boutonScores.setColor(new Color(33, 150, 243));
+        boutonScores.setColorOver(new Color(30, 136, 229));
+        boutonScores.setColorClick(new Color(25, 118, 210));
+        boutonScores.setBorderColor(new Color(21, 101, 192));
+        boutonScores.setForeground(Color.WHITE);
 
         comboBoxSeries = new JComboBox<>();
         chargerSeries();
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        backgroundPanel.add(boutonJouer, gbc);
+        centerPanel.add(new JLabel("Choisir une série :"), gbc);
 
         gbc.gridy++;
-        backgroundPanel.add(new JLabel("Choisir une série :"), gbc);
+        centerPanel.add(comboBoxSeries, gbc);
+
+        backgroundPanel.add(centerPanel, BorderLayout.CENTER);
+
+        JPanel rightPanel = new JPanel(new GridBagLayout());
+        rightPanel.setOpaque(false); 
+        rightPanel.setPreferredSize(new Dimension(240, 600));
+
+        gbc = new GridBagConstraints();
+        gbc.insets = new Insets(20, 0, 20, 0);
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        rightPanel.add(boutonJouer, gbc);
 
         gbc.gridy++;
-        backgroundPanel.add(comboBoxSeries, gbc);
+        rightPanel.add(boutonScores, gbc);
 
         gbc.gridy++;
-        backgroundPanel.add(boutonQuitter, gbc);
+        rightPanel.add(boutonQuitter, gbc);
 
-        boutonJouer.addActionListener(new BoutonJouerAction());
-        boutonQuitter.addActionListener(e -> System.exit(0));
+        backgroundPanel.add(rightPanel, BorderLayout.EAST);
 
-        add(backgroundPanel, BorderLayout.CENTER);
+        boutonJouer.addActionListener(new JouerAction());
+        boutonQuitter.addActionListener(new QuitterAction());
+        boutonScores.addActionListener(new AfficherScoresAction());
+
         setVisible(true);
     }
 
     private void chargerSeries() {
         SerieBD serieDAO = new SerieBD();
         List<Serie> seriesList = serieDAO.getSeries();
-        
+
         for (Serie serie : seriesList) {
             comboBoxSeries.addItem(serie);
         }
     }
 
-    private class BoutonJouerAction implements ActionListener {
+    private class JouerAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             Serie selectedSerie = (Serie) comboBoxSeries.getSelectedItem();
             if (selectedSerie != null) {
-                int seriesId = selectedSerie.getId(); 
-                new Jeu(seriesId); 
-                dispose(); 
+                int seriesId = selectedSerie.getId();
+                new Jeu(seriesId);
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(MenuAvecSeriesBD.this, "Veuillez sélectionner une série.");
+            }
+        }
+    }
+
+    private class QuitterAction implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.exit(0);
+        }
+    }
+
+    private class AfficherScoresAction implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Serie selectedSerie = (Serie) comboBoxSeries.getSelectedItem();
+            if (selectedSerie != null) {
+                int seriesId = selectedSerie.getId();
+                new ScoreTable(seriesId);
             } else {
                 JOptionPane.showMessageDialog(MenuAvecSeriesBD.this, "Veuillez sélectionner une série.");
             }
@@ -81,7 +154,10 @@ public class MenuAvecSeriesBD extends JFrame {
 
         public BackgroundPanel() {
             try {
-                backgroundImage = new ImageIcon("../res/dorfromantik.avif").getImage();
+                backgroundImage = new ImageIcon(getClass().getResource("/res/dorfromantik1.jpg")).getImage();
+                if (backgroundImage == null) {
+                    System.out.println("Image non chargée");
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -96,4 +172,7 @@ public class MenuAvecSeriesBD extends JFrame {
         }
     }
 
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(MenuAvecSeriesBD::new);
+    }
 }

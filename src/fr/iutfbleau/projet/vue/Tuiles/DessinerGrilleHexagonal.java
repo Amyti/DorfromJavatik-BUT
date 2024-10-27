@@ -28,7 +28,7 @@ public class DessinerGrilleHexagonal {
         } else {
             drawFullHexagon(getTerrainColor(tile.getTerrain1()));
         }
-        
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setColor(Color.BLACK);
         g2d.setStroke(new BasicStroke(5));
         g2d.draw(largeHexagon);
